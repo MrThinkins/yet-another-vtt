@@ -35,7 +35,7 @@ export default function CreateCreature() {
   }
 
   function createCreature(type: string) {
-    let creationInfo = {
+    const creationInfo = {
       maxHP: 10,
       currentHP: 10,
       race: 'null',
@@ -82,20 +82,20 @@ export default function CreateCreature() {
       creationInfo.stats[1].modifier = 4
       creationInfo.physicalDR = 4
       creationInfo.passiveSkills = [
-        // @ts-ignore
+        // @ts-expect-error needed I think
         {
           name: 'Extra Health',
           effect: '+1 hit point per level.'
         },
       ]
       creationInfo.skills = [
-        // @ts-ignore
+        // @ts-expect-error needed I think
         {
           name: 'Melee Attack',
           actions: 1,
           effect: 'Damage: 1d6'
         },
-        // @ts-ignore
+        // @ts-expect-error needed I think
         {
           name: 'Frighten',
           actions: 1,
@@ -109,20 +109,20 @@ export default function CreateCreature() {
       creationInfo.physicalDR = 4
       creationInfo.magicalDR = 1
       creationInfo.passiveSkills = [
-        // @ts-ignore
+        // @ts-expect-error needed I think
         {
           name: 'Tough Skin',
           effect: '+1 physical and magical damage resist.'
         },
       ]
       creationInfo.skills = [
-        // @ts-ignore
+        // @ts-expect-error needed I think
         {
           name: 'Melee Attack',
           actions: 1,
           effect: 'Damage: 1d6'
         },
-        // @ts-ignore
+        // @ts-expect-error needed I think
         {
           name: 'Spin Attack',
           actions: 1,
@@ -137,20 +137,20 @@ export default function CreateCreature() {
       creationInfo.physicalDR = 1
       creationInfo.magicalDR = 1
       creationInfo.passiveSkills = [
-        // @ts-ignore
+        // @ts-expect-error needed I think
         {
           name: 'Fast Movement',
           effect: 'Move speed is increased by 5 feet.'
         },
       ]
       creationInfo.skills = [
-        // @ts-ignore
+        // @ts-expect-error needed I think
         {
           name: 'Ranged Attack',
           actions: 2,
           effect: 'Damage: 1d6'
         },
-        // @ts-ignore
+        // @ts-expect-error needed I think
         {
           name: 'Piercing Strike',
           actions: 1,
@@ -164,20 +164,20 @@ export default function CreateCreature() {
       creationInfo.physicalDR = 1
       creationInfo.magicalDR = 1
       creationInfo.passiveSkills = [
-        // @ts-ignore
+        // @ts-expect-error needed I think
         {
           name: 'Friendly',
           effect: 'When making a Charisma check with a creature that is friendly with you, you may  reroll any one’s that you rolled.'
         },
       ]
       creationInfo.skills = [
-        // @ts-ignore
+        // @ts-expect-error needed I think
         {
           name: 'Ranged Attack',
           actions: 2,
           effect: 'Damage: 1d6'
         },
-        // @ts-ignore
+        // @ts-expect-error needed I think
         {
           name: 'Critical Strike',
           actions: 1,
