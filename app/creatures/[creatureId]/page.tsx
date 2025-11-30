@@ -2,7 +2,7 @@
 
 import { useAuth } from "@clerk/clerk-react"
 import YetAnotherTTRPG from "@/components/creatures/creatureSheets/yetAnotherTTRPGmainPage"
-import { use, useRef, useEffect } from "react"
+import { use } from "react"
 import { useMutation, useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import '../creature.css'
