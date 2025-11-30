@@ -46,3 +46,4 @@ package-lock.json
 # clerk configuration (can include secrets)
 /.clerk/
 .vscode/settings.json
+yet-another-vtt-alt.code-workspace
