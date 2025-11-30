@@ -26,8 +26,6 @@ export default function Room( { params }: RoomProps ) {
     document.querySelector('.mainGrid')?.classList.toggle('collapsed')
   }
 
-
-
   return (
     <div>
     {aloudInRoom == true ? (

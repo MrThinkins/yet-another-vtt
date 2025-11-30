@@ -1,0 +1,22 @@
+.test {
+  background-color: aqua;
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-rows: auto auto auto;
+}
+
+.HPNameLevel {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.damageReductionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.gridText {
+  width: 5.25rem;
+}
