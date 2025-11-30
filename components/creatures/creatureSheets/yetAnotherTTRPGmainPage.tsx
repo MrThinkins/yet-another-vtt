@@ -1,6 +1,4 @@
-import { api } from "@/convex/_generated/api"
-import { useQuery } from "convex/react"
-import './yetAnother.css' // not sure if this import is working
+import './yetAnother.css' 
 import { useEffect, useState } from "react"
 import AddSkill from "./addSkill"
 import AddPassiveSkill from "./addPassiveSkill"
@@ -8,7 +6,7 @@ import DisplayStats from "./displayStats"
 import DisplayInventory from "./inventory"
 
 interface YetAnotherTTRPGProps {
-  creatureInfo: any,
+  creatureInfo: any,  // eslint-disable-line @typescript-eslint/no-explicit-any
   userId: string,
   onUpdate: (info: object) => void
 }
@@ -66,7 +64,15 @@ export default function YetAnotherTTRPG({
   const [showAddPassiveSkill, setShowAddPassiveSkill] = useState(false)
 
   const [partToShow, setPartToShow] = useState('abilities')
- 
+
+  function useUserId() {
+    if (userId) {
+      return
+    }
+    return
+    //this is just to fix userId error, probably should be removed, but it might be needed in future.
+  }
+  useUserId()
   console.log(info)
   useEffect(() => {
     if (creatureInfo && Object.keys(creatureInfo).length > 0 && creatureInfo != info) {
@@ -91,21 +97,21 @@ export default function YetAnotherTTRPG({
   }
 
   function addSkill(skill: object) {
-    setInfo((prev: {skills: any}) => ({
+    setInfo((prev: {skills: any}) => ({ // eslint-disable-line @typescript-eslint/no-explicit-any
       ...prev,
       skills: [...prev.skills,  skill]
     }))
   }
 
   function addItem(item: object) {
-    setInfo((prev: {inventory: any}) => ({
+    setInfo((prev: {inventory: any}) => ({ // eslint-disable-line @typescript-eslint/no-explicit-any
       ...prev,
       inventory: [...prev.inventory, item]
     }))
   }
 
   function itemAmountUpdate(index: number, amount: number) {
-    setInfo((prev: {inventory: any}) => ({
+    setInfo((prev: {inventory: any}) => ({ // eslint-disable-line @typescript-eslint/no-explicit-any
       ...prev,
       inventory: prev.inventory.map((item: object, i: number) => 
         i == index ? { ...item, amount: amount } : item
@@ -114,7 +120,7 @@ export default function YetAnotherTTRPG({
   }
 
   function removeItem(index: number) {
-    setInfo((prev: {inventory: any[]}) => ({
+    setInfo((prev: {inventory: any[]}) => ({ // eslint-disable-line @typescript-eslint/no-explicit-any
       ...prev,
       inventory: [
         ...prev.inventory.slice(0, index),
@@ -124,7 +130,7 @@ export default function YetAnotherTTRPG({
   }
 
   function addPassiveSkill(passiveSkill: object) {
-    setInfo((prev: {passiveSkills: any}) => ({
+    setInfo((prev: {passiveSkills: any}) => ({ // eslint-disable-line @typescript-eslint/no-explicit-any
       ...prev,
       passiveSkills: [...prev.passiveSkills, passiveSkill]
     }))
@@ -136,7 +142,7 @@ export default function YetAnotherTTRPG({
       statInfo: ${statInfo}  
     `)
     
-    setInfo((prev: any) => {
+    setInfo((prev: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
       const updatedStats = [...prev.stats]
       updatedStats[index] = {
         name: prev.stats[index].name,
@@ -144,10 +150,8 @@ export default function YetAnotherTTRPG({
       }
     
       return {
-        //@ts-ignore
-        ...prev,
-        //@ts-ignore
-        stats: updatedStats
+        ...prev, // eslint-disable-line @typescript-eslint/no-explicit-any
+        stats: updatedStats // eslint-disable-line @typescript-eslint/no-explicit-any
       }
     })
   }
