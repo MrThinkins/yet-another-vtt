@@ -47,3 +47,5 @@ package-lock.json
 /.clerk/
 .vscode/settings.json
 yet-another-vtt-alt.code-workspace
+
+.cursor/rules/convex_rules.mdc
