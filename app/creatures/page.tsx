@@ -16,20 +16,15 @@ export default function Creatures() {
 
   
   return (
-    <div>
+    <div className="mainPageContainer">
       <Header>
         
       </Header>
-      <main>
-        <h1>
-          Creature page
-        </h1>
-        <button onClick={() => router.push('./creatures/createCreature')}>Add creature</button>
-        <ListCreatures>
-          
-        </ListCreatures>
-      </main>
-      
+      Creature page
+      <button onClick={() => router.push('./creatures/createCreature')}>Add creature</button>
+      <ListCreatures>
+        
+      </ListCreatures>
     </div>
   )
 }

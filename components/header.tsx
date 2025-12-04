@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Header() {
   return(
     <header>
-      <Link className="header-link" href="./">
+      <Link href="./">
         Home
       </Link>
       <Link href="./creatures">
