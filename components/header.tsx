@@ -7,8 +7,11 @@ export default function Header() {
       <Link className="header-link" href="./">
         Home
       </Link>
-      <Link href="./creatures">
+      <Link className="header-link" href="./creatures">
         Creatures
+      </Link>
+      <Link className="header-link" href="./yet-another-ttrpg-rules">
+        Yet-Another-TTRPG-Rules
       </Link>
       <UserButton />
     </header>
