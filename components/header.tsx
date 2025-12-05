@@ -10,9 +10,22 @@ export default function Header() {
       <Link className="header-link" href="../creatures">
         Creatures
       </Link>
-      <Link className="header-link" href="../yet-another-ttrpg-rules">
-        Yet-Another-TTRPG-Rules
-      </Link>
+      <div className="drop-down header-link">
+        <div>
+          Rules ▼
+        </div>
+        <div className="drop-down-links">
+          <Link className="header-link" href="../yet-another-ttrpg-rules">
+          Yet-Another-TTRPG-Rules
+          </Link>
+          <br></br>
+          <Link href="../">
+            Test
+          </Link>
+        </div>
+      </div>
+      
+      
       <UserButton />
     </header>
   )

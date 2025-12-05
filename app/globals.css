@@ -20,6 +20,7 @@
     --foreground: #ededed;
     --foreground-highlight: #ffffff;
     --background-highlight: #222222;
+    --link-unclicked: #bbddff;
   }
 }
 
@@ -39,10 +40,33 @@ header {
   padding: 1rem;
   border-radius: 0.5rem;
   background-color: var(--background-highlight);
+
 }
 
 header .header-link {
   padding-right: 0.5rem;
+}
+
+.drop-down {
+  /* position: relative; */
+  cursor: pointer;
+  display: inline-block;
+  content: ' ▼';
+  color: var(--foreground);
+  /* position: inline-block; */
+}
+
+.drop-down:hover .drop-down-links {
+  display: block;
+}
+
+.drop-down-links {
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  background-color: var(--background-highlight);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
 }
 
 main {
