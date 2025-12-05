@@ -25,8 +25,9 @@ export default function Header() {
         </div>
       </div>
       
-      
-      <UserButton />
+      <div className="user-button">
+        <UserButton />
+      </div>
     </header>
   )
 }

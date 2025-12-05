@@ -40,7 +40,7 @@ header {
   padding: 1rem;
   border-radius: 0.5rem;
   background-color: var(--background-highlight);
-
+  position: relative;
 }
 
 header .header-link {
@@ -103,4 +103,11 @@ a {
   opacity: 1;
   transition: opacity 0.3s ease-in-out;
 
+}
+
+.user-button {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-42.5%)
 }
