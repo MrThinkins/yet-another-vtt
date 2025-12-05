@@ -8,12 +8,10 @@
   width: min-content;
 }
 
-
 .center {
   display: flex;
   margin: auto;
 }
-
 
 /* Grid Stuff goes below */
 
@@ -21,7 +19,6 @@
   display: grid;
   height: 100dvh;
 }
-
 
 /* For displaying stats */
 
