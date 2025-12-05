@@ -7,6 +7,7 @@ import { useMutation, useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import '../creature.css'
 import CreatureName from "@/components/creatures/creatureName"
+import Header from "@/components/header"
 
 interface CreatureId {
   params: Promise<{
@@ -46,6 +47,9 @@ export default function CreaturePage( { params }: CreatureId ) {
   }
   
   return (
+    <div>
+    <Header>
+    </Header>
     <main>
       <div >
         <CreatureName
@@ -70,5 +74,7 @@ export default function CreaturePage( { params }: CreatureId ) {
       )}
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     </main>
+    </div>
+    
   )
 }

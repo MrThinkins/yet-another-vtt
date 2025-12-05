@@ -55,6 +55,10 @@ a:visited {
   color: #bbddff;
 }
 
+a {
+  color: var(--foreground);
+}
+
 .slightHighlight {
   background-color: var(--slight-highlight);
   border-radius: 0.5rem;
