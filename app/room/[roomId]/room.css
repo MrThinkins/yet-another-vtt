@@ -35,8 +35,6 @@
   cursor: pointer;
 }
 
-
-
 .rightSideBarNavGrid {
   display: grid;
   grid-template-columns: auto auto;

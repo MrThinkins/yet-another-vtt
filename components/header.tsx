@@ -10,6 +10,9 @@ export default function Header() {
       <Link className="header-link" href="../creatures">
         Creatures
       </Link>
+      <Link className="header-link" href="../room">
+        Room
+      </Link>
       <div className="drop-down header-link">
         <div>
           Rules ▼
