@@ -6,6 +6,7 @@ import RightSideBar from '@/components/room/rightSideBar'
 import { useAuth } from '@clerk/clerk-react'
 import { useQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
+import VttMap from '@/components/map/vttMap'
 
 interface RoomProps {
   params: Promise<{
@@ -31,7 +32,12 @@ export default function Room( { params }: RoomProps ) {
     {aloudInRoom == true ? (
     <div className="mainGrid">
       <div>
-        Hello, welcome to roomId: { roomId }
+
+        <VttMap
+          roomId={roomId}
+          userId={userId || ''}
+        >
+        </VttMap>
         <div onClick={toggleRightSide} className="rightSideToggler material-symbols-outlined">
           menu
         </div>
