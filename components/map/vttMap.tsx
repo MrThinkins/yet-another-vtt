@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from "react"
 import DrawFrame from "./drawFrame"
+import './map.css'
 
 interface vttMapProps {
   roomId: string,
@@ -11,20 +12,30 @@ export default function VttMap({
   userId
 }: vttMapProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const divRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef(0)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
 
   useEffect(() => {
-    function updateDimensions() {
+    const div = divRef.current
+    if (!div) return
+
+    const updateDimensions = () => {
       setDimensions({
-        width: window.innerWidth,
-        height: window.innerHeight
+        width: div.clientWidth,
+        height: div.clientHeight
       })
     }
     updateDimensions()
-    window.addEventListener('resize', updateDimensions)
+    
+    const resizeObserver = new ResizeObserver(updateDimensions)
+    resizeObserver.observe(div)
 
-    return () => window.removeEventListener('resize', updateDimensions)
+    return () => {
+      resizeObserver.disconnect()
+    }
+    // window.addEventListener('resize', updateDimensions)
+    // return () => window.removeEventListener('resize', updateDimensions)
   }, [])
 
   useEffect(() => {
@@ -56,12 +67,17 @@ export default function VttMap({
     }
   }, [dimensions])
   return (
-    <div>
-      <canvas
-        ref={canvasRef}
+    // <div>
+      <div
+        ref={divRef}
+        className="divRef"
       >
-      </canvas>
-      
-    </div>
+        <canvas
+          ref={canvasRef}
+          className="canvasRef"
+        >
+        </canvas>
+      </div>
+    // </div>
   )
 }

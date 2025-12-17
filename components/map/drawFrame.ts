@@ -1,7 +1,7 @@
 export default function DrawFrame(
   canvas: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
-  dimension: { width: number, height: number }
+  dimensions: { width: number, height: number }
 ) {
   ctx.clearRect(0, 0, canvas.width, canvas.height)
 

@@ -1,7 +1,13 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 .mainGrid {
   height: 100dvh;
   display: grid;
   grid-template-columns: 1fr 16rem;
+  overflow: hidden;
 }
 
 .mainGrid > div {
