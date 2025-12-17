@@ -67,7 +67,6 @@ export default function VttMap({
     }
   }, [dimensions])
   return (
-    // <div>
       <div
         ref={divRef}
         className="divRef"
@@ -78,6 +77,5 @@ export default function VttMap({
         >
         </canvas>
       </div>
-    // </div>
   )
 }
