@@ -59,7 +59,7 @@ export default function VttMap({
     }
 
     animationRef.current = requestAnimationFrame(drawFrame)
-
+    
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current)
