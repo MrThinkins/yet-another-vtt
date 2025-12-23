@@ -7,6 +7,9 @@ interface vttMapProps {
   userId: string
 }
 
+const minZoom = 0.1
+const maxZoom = 10
+
 export default function VttMap({
   roomId,
   userId
@@ -14,8 +17,11 @@ export default function VttMap({
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const divRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef(0)
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
+  const [dimensions, setDimensions] = useState({ width: 20, height: 20 })
 
+  // move and zoom map
+  const [zoom, setZoom] = useState(1)
+  // dimensions updating
   useEffect(() => {
     const div = divRef.current
     if (!div) return
@@ -34,38 +40,84 @@ export default function VttMap({
     return () => {
       resizeObserver.disconnect()
     }
-    // window.addEventListener('resize', updateDimensions)
-    // return () => window.removeEventListener('resize', updateDimensions)
   }, [])
+  // update dimensions of the div this is in
+  // useEffect(() => {
+  //   const canvas = canvasRef.current
+
+  //   if (!canvas) return
+  //   canvas.width = dimensions.width
+  //   canvas.height = dimensions.height
+
+  //   const ctx = canvas.getContext('2d')
+
+  //   if (!ctx) return
+
+  //   const drawFrame = () => {
+  //     DrawFrame(canvas, ctx, dimensions, zoom)
+  //     animationRef.current = requestAnimationFrame(drawFrame)
+  //   }
+
+  //   if (animationRef.current) {
+  //     cancelAnimationFrame(animationRef.current)
+  //   }
+
+  //   animationRef.current = requestAnimationFrame(drawFrame)
+
+  //   return () => {
+  //     if (animationRef.current) {
+  //       cancelAnimationFrame(animationRef.current)
+  //     }
+  //   }
+  // }, [dimensions])
+
+  const handleWheelZoom = (e: WheelEvent) => {
+    e.preventDefault()
+
+    const canvas = canvasRef.current
+
+    if (!canvas) return
+
+    const rect = canvas.getBoundingClientRect()
+    const mouseX = e.clientX - rect.left
+    const mouseY = e.clientY - rect.top
+
+    const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1
+    const newZoom = Math.max(minZoom, Math.min(zoom * zoomFactor, maxZoom))
+
+    const zoomRatio = newZoom / zoom
+    console.log(zoom)
+    setZoom(newZoom)
+  }
 
   useEffect(() => {
     const canvas = canvasRef.current
 
     if (!canvas) return
+
+    canvas.addEventListener('wheel', handleWheelZoom, { passive: false })
+
+    return () => {
+      canvas.removeEventListener('wheel', handleWheelZoom)
+    }
+  })
+
+  // update map position on mouse interaction
+  useEffect(() => {
+    const canvas = canvasRef.current
+    
+    if (!canvas) return
+
     canvas.width = dimensions.width
     canvas.height = dimensions.height
 
     const ctx = canvas.getContext('2d')
-
     if (!ctx) return
 
-    const drawFrame = () => {
-      DrawFrame(canvas, ctx, dimensions)
-      animationRef.current = requestAnimationFrame(drawFrame)
-    }
+    console.log(zoom)
+    DrawFrame(canvas, ctx, dimensions, zoom)
+  }, [zoom, dimensions])
 
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current)
-    }
-
-    animationRef.current = requestAnimationFrame(drawFrame)
-    
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current)
-      }
-    }
-  }, [dimensions])
   return (
       <div
         ref={divRef}
