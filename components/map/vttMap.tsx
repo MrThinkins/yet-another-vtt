@@ -22,6 +22,8 @@ export default function VttMap({
   // move and zoom map
   const [zoom, setZoom] = useState(1)
   const [offset, setOffset] = useState({ x: 0, y: 0 })
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
+  const [isDragging, setIsDragging] = useState(false)
   // dimensions updating
   useEffect(() => {
     const div = divRef.current
@@ -85,6 +87,28 @@ export default function VttMap({
     setOffset({ x: 0, y: 0 })
   }
 
+  // drag to move
+  const mouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    setIsDragging(true)
+    setDragStart({
+      x: e.clientX - offset.x,
+      y: e.clientY - offset.y
+    })
+  }
+  
+  const mouseUp = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    setIsDragging(false)
+  }
+
+  const mouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (isDragging) {
+      setOffset({
+        x: e.clientX - dragStart.x,
+        y: e.clientY - dragStart.y
+      })
+    }
+  }
+
   // update map position on mouse interaction
   useEffect(() => {
     const canvas = canvasRef.current
@@ -110,6 +134,9 @@ export default function VttMap({
           ref={canvasRef}
           className="canvasRef"
           onDoubleClick={doubleClick}
+          onMouseDown={mouseDown}
+          onMouseMove={mouseMove}
+          onMouseUp={mouseUp}
         >
         </canvas>
       </div>
