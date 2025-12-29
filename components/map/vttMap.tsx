@@ -63,7 +63,6 @@ export default function VttMap({
     const newOffsetX = mouseX - zoomRatio * (mouseX - offset.x)
     const newOffsetY = mouseY - zoomRatio * (mouseY - offset.y)
 
-    console.log(zoom)
     setZoom(newZoom)
     setOffset({ x: newOffsetX, y: newOffsetY })
   }
