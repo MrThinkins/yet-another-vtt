@@ -17,7 +17,7 @@ export default function VttMap({
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const divRef = useRef<HTMLDivElement>(null)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
-  const [mapDimensions, setMapDimensions] = useState({ width: 100, height: 100 })
+  const [mapDimensions, setMapDimensions] = useState({ width: 10, height: 10 })
 
   // move and zoom map
   const [zoom, setZoom] = useState(1)
@@ -66,6 +66,7 @@ export default function VttMap({
     setOffset({ x: newOffsetX, y: newOffsetY })
   }
 
+  // wheel zoom handling
   useEffect(() => {
     const canvas = canvasRef.current
 
@@ -77,6 +78,12 @@ export default function VttMap({
       canvas.removeEventListener('wheel', handleWheelZoom)
     }
   })
+
+  // double click to reset zoom
+  const doubleClick = () => {
+    setZoom(1)
+    setOffset({ x: 0, y: 0 })
+  }
 
   // update map position on mouse interaction
   useEffect(() => {
@@ -102,6 +109,7 @@ export default function VttMap({
         <canvas
           ref={canvasRef}
           className="canvasRef"
+          onDoubleClick={doubleClick}
         >
         </canvas>
       </div>
