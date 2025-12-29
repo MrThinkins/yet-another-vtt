@@ -16,7 +16,6 @@ export default function VttMap({
 }: vttMapProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const divRef = useRef<HTMLDivElement>(null)
-  const animationRef = useRef(0)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const [mapDimensions, setMapDimensions] = useState({ width: 100, height: 100 })
 
@@ -43,35 +42,6 @@ export default function VttMap({
       resizeObserver.disconnect()
     }
   }, [])
-  // update dimensions of the div this is in
-  // useEffect(() => {
-  //   const canvas = canvasRef.current
-
-  //   if (!canvas) return
-  //   canvas.width = dimensions.width
-  //   canvas.height = dimensions.height
-
-  //   const ctx = canvas.getContext('2d')
-
-  //   if (!ctx) return
-
-  //   const drawFrame = () => {
-  //     DrawFrame(canvas, ctx, dimensions, zoom)
-  //     animationRef.current = requestAnimationFrame(drawFrame)
-  //   }
-
-  //   if (animationRef.current) {
-  //     cancelAnimationFrame(animationRef.current)
-  //   }
-
-  //   animationRef.current = requestAnimationFrame(drawFrame)
-
-  //   return () => {
-  //     if (animationRef.current) {
-  //       cancelAnimationFrame(animationRef.current)
-  //     }
-  //   }
-  // }, [dimensions])
 
   const handleWheelZoom = (e: WheelEvent) => {
     e.preventDefault()
