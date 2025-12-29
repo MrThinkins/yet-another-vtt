@@ -17,10 +17,12 @@ export default function VttMap({
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const divRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef(0)
-  const [dimensions, setDimensions] = useState({ width: 20, height: 20 })
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
+  const [mapDimensions, setMapDimensions] = useState({ width: 100, height: 100 })
 
   // move and zoom map
   const [zoom, setZoom] = useState(1)
+  const [offset, setOffset] = useState({ x: 0, y: 0 })
   // dimensions updating
   useEffect(() => {
     const div = divRef.current
@@ -86,8 +88,12 @@ export default function VttMap({
     const newZoom = Math.max(minZoom, Math.min(zoom * zoomFactor, maxZoom))
 
     const zoomRatio = newZoom / zoom
+    const newOffsetX = mouseX - zoomRatio * (mouseX - offset.x)
+    const newOffsetY = mouseY - zoomRatio * (mouseY - offset.y)
+
     console.log(zoom)
     setZoom(newZoom)
+    setOffset({ x: newOffsetX, y: newOffsetY })
   }
 
   useEffect(() => {
@@ -115,8 +121,8 @@ export default function VttMap({
     if (!ctx) return
 
     console.log(zoom)
-    DrawFrame(canvas, ctx, dimensions, zoom)
-  }, [zoom, dimensions])
+    DrawFrame(canvas, ctx, mapDimensions, zoom, offset)
+  }, [zoom, dimensions, offset])
 
   return (
       <div
