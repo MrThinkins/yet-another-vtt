@@ -1,3 +1,6 @@
+const image = new Image()
+image.src = '/manor-test-map.jpg'
+
 export default function DrawFrame(
   canvas: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
@@ -13,11 +16,16 @@ export default function DrawFrame(
   ctx.translate(offset.x, offset.y)
   ctx.scale(zoom, zoom)
 
-  for (let row = 0; row < mapDimensions.height; row++) {
-    for (let col = 0; col < mapDimensions.width; col++) {
-      const hue = ((row * 100 + col * 100) % 360) | 0
-      ctx.fillStyle = `hsl(${hue}, 70%, 50%)`
-      ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize)
-    }
-  }
+  ctx.drawImage(
+    image,
+    0, 0
+  )
+
+  // for (let row = 0; row < mapDimensions.height; row++) {
+  //   for (let col = 0; col < mapDimensions.width; col++) {
+  //     const hue = ((row * 100 + col * 100) % 360) | 0
+  //     ctx.fillStyle = `hsl(${hue}, 70%, 50%)`
+  //     ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize)
+  //   }
+  // }
 }
