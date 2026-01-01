@@ -10,8 +10,8 @@ export default function DrawFrame(
 ) {
   ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-  const cellSize = 100
-  const row = Math.floor
+  // const cellSize = 100
+  // const row = Math.floor
 
   ctx.translate(offset.x, offset.y)
   ctx.scale(zoom, zoom)

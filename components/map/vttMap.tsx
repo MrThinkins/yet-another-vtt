@@ -10,14 +10,15 @@ interface vttMapProps {
 const minZoom = 0.1
 const maxZoom = 10
 
+
 export default function VttMap({
-  roomId,
-  userId
+  roomId, // eslint-disable-line
+  userId // eslint-disable-line
 }: vttMapProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const divRef = useRef<HTMLDivElement>(null)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
-  const [mapDimensions, setMapDimensions] = useState({ width: 10, height: 10 })
+  const [mapDimensions] = useState({ width: 10, height: 10 })
 
   // move and zoom map
   const [zoom, setZoom] = useState(1)
@@ -95,7 +96,7 @@ export default function VttMap({
     })
   }
   
-  const mouseUp = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const mouseUp = (e: React.MouseEvent<HTMLCanvasElement>) => { // eslint-disable-line
     setIsDragging(false)
   }
 
