@@ -51,7 +51,13 @@ function Content() {
     <div className="flex flex-col gap-8 max-w-lg mx-auto">
 
       Create and look at creatures and player characters.
+      <br></br>
       <Link href="/creatures">Creatures</Link>
+      <br></br>
+      <br></br>
+      Virtual table top rooms and room creation
+      <br></br>
+      <Link href="/room">Room</Link>
     </div>
   );
 }
