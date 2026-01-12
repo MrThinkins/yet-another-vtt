@@ -1,4 +1,4 @@
-import { query } from "./_generated/server"
+import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
 
 export const getRoom = query({
@@ -12,3 +12,24 @@ export const getRoom = query({
     return group.users.includes(args.userId)
   }
 })
+
+export const createRoom = mutation({
+  args: {
+    userId: v.string()
+  },
+  handler: async (ctx, args) => {
+    const lastRoomId = await ctx.db
+      .query("rooms")
+      .order("desc")
+      .first()
+
+    const nextRoomId = lastRoomId ? (lastRoomId.roomId + 1) : 1
+
+    await ctx.db.insert("rooms", {
+      roomId: nextRoomId,
+      owner: args.userId,
+      users: [args.userId]
+    })
+  }
+})
+
