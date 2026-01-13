@@ -15,7 +15,8 @@ export const getRoom = query({
 
 export const createRoom = mutation({
   args: {
-    userId: v.string()
+    userId: v.string(),
+    name: v.string()
   },
   handler: async (ctx, args) => {
     const lastRoomId = await ctx.db
@@ -28,7 +29,8 @@ export const createRoom = mutation({
     await ctx.db.insert("rooms", {
       roomId: nextRoomId,
       owner: args.userId,
-      users: [args.userId]
+      users: [args.userId],
+      name: args.name
     })
   }
 })

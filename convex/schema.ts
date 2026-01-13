@@ -27,6 +27,7 @@ export default defineSchema({
   rooms: defineTable({
     roomId: v.number(),
     users: v.array(v.string()), // check against this to make sure user has permission
-    owner: v.string()
+    owner: v.string(),
+    name: v.string()
   })
 })

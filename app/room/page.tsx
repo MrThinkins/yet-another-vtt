@@ -15,16 +15,19 @@ export default function Room() {
   function createRoomFunction() {
     if (userId) {
       createRoom({
-        userId: userId
+        userId: userId,
+        name: "temp"
       })
     }
   }
 
   return (
     <div>
-      {rooms?.map(({ roomId }, index) => (
+      {rooms?.map(({ roomId, name }, index) => (
         <div key={index}>
-          {roomId}
+          <Link href={`/room/${roomId}`}>
+            {name}
+          </Link>
         </div>
       ))}
       <br></br>
