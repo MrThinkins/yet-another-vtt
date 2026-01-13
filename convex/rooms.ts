@@ -33,3 +33,18 @@ export const createRoom = mutation({
   }
 })
 
+
+// THIS WILL NOT SCALE PAST A FEW HUNDRED ROOMS, FIX IN FUTURE
+export const getUserRoomList = query({
+  args: {
+    userId: v.string()
+  },
+  handler: async (ctx, args) => {
+    const allRooms = await ctx.db.query("rooms").collect()
+
+    const userRooms = allRooms.filter((room) =>
+      room.users.includes(args.userId)
+    )
+    return userRooms.slice(0, 100)
+  }
+})
