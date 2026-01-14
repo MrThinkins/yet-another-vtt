@@ -4,11 +4,9 @@ import { useAuth } from "@clerk/clerk-react"
 import { useMutation, useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import Link from "next/link"
-import { usePathname } from 'next/navigation'
 import { FormEvent, useState } from "react"
 
 export default function Room() {
-  const urlPath = usePathname()
   const { userId } = useAuth()
   const createRoom = useMutation(api.rooms.createRoom)
   const rooms = useQuery(api.rooms.getUserRoomList, { userId: userId || ''})
