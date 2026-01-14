@@ -50,3 +50,23 @@ export const getUserRoomList = query({
     return userRooms.slice(0, 100)
   }
 })
+
+export const deleteRoom = mutation({
+  args: {
+    userId: v.string(),
+    roomId: v.number()
+  },
+  handler: async (ctx, args) => {
+    const room = await ctx.db
+      .query("rooms")
+      .filter((q) => q.eq(q.field("roomId"), args.roomId))
+      .filter((q) => q.eq(q.field("owner"), args.userId))
+      .first()
+
+    if (!room || room.owner !== args.userId) {
+      throw new Error("room not found or userId not matched with owner ID")
+    }
+
+    await ctx.db.delete(room._id)
+  }
+})
