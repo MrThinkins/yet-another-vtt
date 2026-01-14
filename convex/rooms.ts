@@ -68,5 +68,17 @@ export const deleteRoom = mutation({
     }
 
     await ctx.db.delete(room._id)
+    
+    const roomMessages = await ctx.db
+      .query("messages")
+      .filter((q) => (q.eq(q.field("roomId"), args.roomId)))
+      .collect()
+
+    if (!roomMessages) {
+      throw new Error("room messages not found")
+    }
+    for (const message of roomMessages) {
+      await ctx.db.delete(message._id)
+    }
   }
 })
