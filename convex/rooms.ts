@@ -1,4 +1,4 @@
-import { query } from "./_generated/server"
+import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
 
 export const getRoom = query({
@@ -10,5 +10,43 @@ export const getRoom = query({
       .first()
     if (!group) return false
     return group.users.includes(args.userId)
+  }
+})
+
+export const createRoom = mutation({
+  args: {
+    userId: v.string(),
+    name: v.string()
+  },
+  handler: async (ctx, args) => {
+    const lastRoomId = await ctx.db
+      .query("rooms")
+      .order("desc")
+      .first()
+
+    const nextRoomId = lastRoomId ? (lastRoomId.roomId + 1) : 1
+
+    await ctx.db.insert("rooms", {
+      roomId: nextRoomId,
+      owner: args.userId,
+      users: [args.userId],
+      name: args.name
+    })
+  }
+})
+
+
+// THIS WILL NOT SCALE PAST A FEW HUNDRED ROOMS, FIX IN FUTURE
+export const getUserRoomList = query({
+  args: {
+    userId: v.string()
+  },
+  handler: async (ctx, args) => {
+    const allRooms = await ctx.db.query("rooms").collect()
+
+    const userRooms = allRooms.filter((room) =>
+      room.users.includes(args.userId)
+    )
+    return userRooms.slice(0, 100)
   }
 })

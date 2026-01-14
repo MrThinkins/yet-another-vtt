@@ -1,5 +1,6 @@
 import { useState } from "react"
 import Messages from "./rightSide/messages"
+import Settings from "./rightSide/settings"
 
 
 interface rightSideBarProps {
@@ -32,9 +33,8 @@ export default function RightSideBar({
           >
           </Messages>
         ) : (
-          <div>
-            Not Selected
-          </div>
+          <Settings>
+          </Settings>
         )}
       </div>
     </div>
