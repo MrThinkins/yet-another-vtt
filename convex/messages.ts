@@ -46,15 +46,19 @@ export const send = mutation({
       .filter((q) => q.eq(q.field("roomId"), args.roomId))
       .first()
 
-    if (!group) {
-      throw new Error("Group not found.")
-    }
-
     const newMessage ={
       message: args.message,
       userName: args.userName,
       userId: args.userId,
       timeSent: args.timeSent
+    }
+
+    if (!group) {
+      await ctx.db.insert("messages", {
+        roomId: args.roomId,
+        messages: [newMessage]
+      })
+      return
     }
 
     await ctx.db.patch(group._id, {

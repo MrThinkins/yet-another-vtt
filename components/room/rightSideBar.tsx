@@ -33,7 +33,10 @@ export default function RightSideBar({
           >
           </Messages>
         ) : (
-          <Settings>
+          <Settings
+            roomId={roomId}
+            userId={userId}
+          >
           </Settings>
         )}
       </div>
