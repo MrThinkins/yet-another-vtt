@@ -28,6 +28,7 @@ export default function Settings({
       <Link href="../">
         Exit
       </Link>
+      <br></br>
       <button
         onClick={deleteRoomFunction}
       >
