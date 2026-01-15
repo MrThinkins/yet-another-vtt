@@ -12,6 +12,7 @@ import type * as creatures from "../creatures.js";
 import type * as messages from "../messages.js";
 import type * as myFunctions from "../myFunctions.js";
 import type * as rooms from "../rooms.js";
+import type * as userTokenToId from "../userTokenToId.js";
 
 import type {
   ApiFromModules,
@@ -24,6 +25,7 @@ declare const fullApi: ApiFromModules<{
   messages: typeof messages;
   myFunctions: typeof myFunctions;
   rooms: typeof rooms;
+  userTokenToId: typeof userTokenToId;
 }>;
 
 /**

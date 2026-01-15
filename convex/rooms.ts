@@ -1,8 +1,7 @@
 import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
-import { verifyToken } from "@clerk/backend"
+import userTokenToId from "./userTokenToId"
 
-const CLERK_JWT_KEY = process.env.CLERK_JWT_KEY
 
 export const getRoom = query({
   args: { roomId: v.number(), userId: v.string() },
@@ -45,29 +44,18 @@ export const getUserRoomList = query({
     userToken: v.string()
   },
   handler: async (ctx, args) => {
-    // console.log("userToken: " + args.userToken)
-    try {
-      const result = await verifyToken(args.userToken, {
-        jwtKey: CLERK_JWT_KEY
-      })
-      // console.log(result)
-      const userId = result.sub
-      // console.log("userId second: " + userId)
-      if (!userId) {
-        throw new Error("Problem with auth user token")
-      }
+    const userId = await userTokenToId(args.userToken)
 
-      const allRooms = await ctx.db.query("rooms").collect()
-
-      const userRooms = allRooms.filter((room) =>
-        room.users.includes(userId)
-      )
-      return userRooms.slice(0, 100)
-     
-    } catch (error) {
-      console.error("auth error: TRY REFRESHING PAGE")
-      throw new Error("Auth failed, please refresh page")
+    if (!userId) {
+      throw new Error("Problem with auth user token")
     }
+
+    const allRooms = await ctx.db.query("rooms").collect()
+
+    const userRooms = allRooms.filter((room) =>
+      room.users.includes(userId)
+    )
+    return userRooms.slice(0, 100)
   } 
 })
 
