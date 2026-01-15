@@ -4,14 +4,20 @@ import userTokenToId from "./userTokenToId"
 
 
 export const getRoom = query({
-  args: { roomId: v.number(), userId: v.string() },
+  args: { roomId: v.number()},
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+    if (!identity) {
+      throw new Error("Not authenticated")
+    }
+    const userId = identity.subject
+
     const group = await ctx.db
       .query("rooms")
       .filter((q) => (q.eq(q.field("roomId"), args.roomId)))
       .first()
     if (!group) return false
-    return group.users.includes(args.userId)
+    return group.users.includes(userId)
   }
 })
 

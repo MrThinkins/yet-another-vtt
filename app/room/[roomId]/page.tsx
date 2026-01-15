@@ -18,7 +18,7 @@ export default function Room( { params }: RoomProps ) {
   const param = use(params)
   const { userId } = useAuth()
   const { roomId } = param
-  const aloudInRoom = useQuery(api.rooms.getRoom, { roomId: Number(roomId), userId: String(userId) })
+  const aloudInRoom = useQuery(api.rooms.getRoom, { roomId: Number(roomId) })
 
   console.log(userId)
   console.log(`in room: ${aloudInRoom}`)
