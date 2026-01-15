@@ -39,25 +39,27 @@ export const createRoom = mutation({
 
 
 // THIS WILL NOT SCALE PAST A FEW HUNDRED ROOMS, FIX IN FUTURE
-export const getUserRoomList = query({
-  args: {
-    userToken: v.string()
-  },
-  handler: async (ctx, args) => {
-    const userId = await userTokenToId(args.userToken)
 
-    if (!userId) {
-      throw new Error("Problem with auth user token")
+
+export const getUserRoomList = query({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (identity === null) {
+      throw new Error("Not authenticated");
     }
 
-    const allRooms = await ctx.db.query("rooms").collect()
+    // Pick what you consider your userId:
+    const userId = identity.subject;        // or identity.tokenIdentifier
 
+    const allRooms = await ctx.db.query("rooms").collect();
     const userRooms = allRooms.filter((room) =>
       room.users.includes(userId)
-    )
-    return userRooms.slice(0, 100)
-  } 
-})
+    );
+
+    return userRooms.slice(0, 100);
+  },
+});
 
 export const deleteRoom = mutation({
   args: {

@@ -32,10 +32,12 @@ export default function Room() {
     }
   }
 
-  const rooms = useQuery(
-    api.rooms.getUserRoomList, 
-    token ? { userToken: token } : "skip"
-  )
+  // const rooms = useQuery(
+  //   api.rooms.getUserRoomList, 
+  //   token ? { userToken: token } : "skip"
+  // )
+
+  const rooms = useQuery(api.rooms.getUserRoomList)
 
   const createRoomFunction = async (e: FormEvent) => {
     e.preventDefault()
