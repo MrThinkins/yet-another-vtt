@@ -1,5 +1,8 @@
 import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
+import { verifyToken } from "@clerk/backend"
+
+const CLERK_JWT_KEY = process.env.CLERK_JWT_KEY
 
 export const getRoom = query({
   args: { roomId: v.number(), userId: v.string() },
@@ -39,16 +42,33 @@ export const createRoom = mutation({
 // THIS WILL NOT SCALE PAST A FEW HUNDRED ROOMS, FIX IN FUTURE
 export const getUserRoomList = query({
   args: {
-    userId: v.string()
+    userToken: v.string()
   },
   handler: async (ctx, args) => {
-    const allRooms = await ctx.db.query("rooms").collect()
+    // console.log("userToken: " + args.userToken)
+    try {
+      const result = await verifyToken(args.userToken, {
+        jwtKey: CLERK_JWT_KEY
+      })
+      // console.log(result)
+      const userId = result.sub
+      // console.log("userId second: " + userId)
+      if (!userId) {
+        throw new Error("Problem with auth user token")
+      }
 
-    const userRooms = allRooms.filter((room) =>
-      room.users.includes(args.userId)
-    )
-    return userRooms.slice(0, 100)
-  }
+      const allRooms = await ctx.db.query("rooms").collect()
+
+      const userRooms = allRooms.filter((room) =>
+        room.users.includes(userId)
+      )
+      return userRooms.slice(0, 100)
+     
+    } catch (error) {
+      console.error("auth error: TRY REFRESHING PAGE")
+      throw new Error("Auth failed, please refresh page")
+    }
+  } 
 })
 
 export const deleteRoom = mutation({
