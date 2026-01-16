@@ -1,7 +1,7 @@
 import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
 
-export const get = query({
+export const getMessage = query({
   args: { 
     roomId: v.number()
   },
@@ -30,7 +30,7 @@ export const get = query({
   },
 })
 
-export const send = mutation({
+export const sendMessage = mutation({
   args: {
     roomId: v.number(),
     message: v.string(),
