@@ -47,9 +47,11 @@ export default function Room() {
         <input
           id="roomName"
           type="text"
+          placeholder="Input room name here."
           value={roomName}
           onChange={(e) => setRoomName(e.target.value)}
         ></input>
+        <br></br>
         <button type="submit">
           Create New Room
         </button>
