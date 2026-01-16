@@ -2,8 +2,16 @@ import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
 
 export const get = query({
-  args: { roomId: v.number(), userId: v.string() },
+  args: { 
+    roomId: v.number()
+  },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+    if (!identity) {
+      throw new Error("Not Authenticated")
+    }
+    const userId = identity.subject
+
     const preGroup = await ctx.db 
       .query("rooms")
       .filter((q) => (q.eq(q.field("roomId"), args.roomId)))
@@ -11,7 +19,7 @@ export const get = query({
 
     if (!preGroup) {
       return
-    } else if (!preGroup.users.includes(args.userId)) {
+    } else if (!preGroup.users.includes(userId)) {
       return
     }
     const group = await ctx.db
@@ -27,10 +35,15 @@ export const send = mutation({
     roomId: v.number(),
     message: v.string(),
     userName: v.string(),
-    userId: v.string(),
     timeSent: v.number() 
   },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+    if (!identity) {
+      throw new Error("Not Authenticated")
+    }
+    const userId = identity.subject
+
     const preGroup = await ctx.db 
       .query("rooms")
       .filter((q) => (q.eq(q.field("roomId"), args.roomId)))
@@ -38,7 +51,7 @@ export const send = mutation({
 
     if (!preGroup) {
       return
-    } else if (!preGroup.users.includes(args.userId)) {
+    } else if (!preGroup.users.includes(userId)) {
       return
     }
     const group = await ctx.db
@@ -49,7 +62,7 @@ export const send = mutation({
     const newMessage ={
       message: args.message,
       userName: args.userName,
-      userId: args.userId,
+      userId: userId,
       timeSent: args.timeSent
     }
 

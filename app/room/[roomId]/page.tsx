@@ -3,7 +3,6 @@
 import { use } from 'react'
 import './room.css'
 import RightSideBar from '@/components/room/rightSideBar'
-import { useAuth } from '@clerk/clerk-react'
 import { useQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import VttMap from '@/components/map/vttMap'
@@ -16,11 +15,9 @@ interface RoomProps {
 
 export default function Room( { params }: RoomProps ) {
   const param = use(params)
-  const { userId } = useAuth()
   const { roomId } = param
-  const aloudInRoom = useQuery(api.rooms.getRoom, { roomId: Number(roomId), userId: String(userId) })
+  const aloudInRoom = useQuery(api.rooms.getRoom, { roomId: Number(roomId) })
 
-  console.log(userId)
   console.log(`in room: ${aloudInRoom}`)
 
   function toggleRightSide() {
@@ -35,7 +32,6 @@ export default function Room( { params }: RoomProps ) {
 
         <VttMap
           roomId={roomId}
-          userId={userId || ''}
         >
         </VttMap>
         <div onClick={toggleRightSide} className="rightSideToggler material-symbols-outlined">
@@ -45,7 +41,6 @@ export default function Room( { params }: RoomProps ) {
       <div className="rightSideBar">
         <RightSideBar
           roomId={roomId}
-          userId={userId || ''}
         >
         </RightSideBar>
       </div>

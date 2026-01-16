@@ -4,13 +4,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 interface settingsProps {
-  roomId: string,
-  userId: string
+  roomId: string
 }
 
 export default function Settings({
-  roomId,
-  userId
+  roomId
 }: settingsProps) {
   const deleteRoom = useMutation(api.rooms.deleteRoom)
   const router = useRouter()
@@ -19,7 +17,7 @@ export default function Settings({
     const confirmRoomDelete = confirm("Are you sure that you want to delete the room?")
 
     if (confirmRoomDelete) {
-      deleteRoom({ roomId: Number(roomId), userId: userId })
+      deleteRoom({ roomId: Number(roomId) })
     }
     router.push('./')
   }

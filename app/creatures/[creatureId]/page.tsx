@@ -1,6 +1,5 @@
 'use client'
 
-import { useAuth } from "@clerk/clerk-react"
 import YetAnotherTTRPG from "@/components/creatures/creatureSheets/yetAnotherTTRPGmainPage"
 import { use } from "react"
 import { useMutation, useQuery } from "convex/react"
@@ -17,10 +16,9 @@ interface CreatureId {
 
 export default function CreaturePage( { params }: CreatureId ) {
   const param = use(params)
-  const { userId } = useAuth()
   const { creatureId } = param
   
-  const creature = useQuery(api.creatures.getUserCreature, { userId: String(userId),  _id: creatureId })
+  const creature = useQuery(api.creatures.getUserCreature, { _id: creatureId })
   const updateCreature = useMutation(api.creatures.updateUserCreature)
   console.log(creature)
 
@@ -28,7 +26,6 @@ export default function CreaturePage( { params }: CreatureId ) {
     if (
       !creature?._id ||
       !newName ||
-      !userId ||
       !info
     ) {
       return
@@ -37,7 +34,6 @@ export default function CreaturePage( { params }: CreatureId ) {
       await updateCreature({
         _id: creatureId,
         creatureName: newName,
-        userId: userId,
         creatureInfo: info
       })
     } catch {
@@ -63,7 +59,6 @@ export default function CreaturePage( { params }: CreatureId ) {
       {creature?.creatureType == 'yet_another_ttrpg' ? (
         <YetAnotherTTRPG
           creatureInfo={creature.creatureInfo}
-          userId={userId || ''}
           onUpdate={(info) => handleUpdateCreature({info: info})}
         >
         </YetAnotherTTRPG>

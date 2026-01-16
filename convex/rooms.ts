@@ -1,24 +1,36 @@
 import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
 
+
 export const getRoom = query({
-  args: { roomId: v.number(), userId: v.string() },
+  args: { roomId: v.number()},
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+    if (!identity) {
+      throw new Error("Not Authenticated")
+    }
+    const userId = identity.subject
+
     const group = await ctx.db
       .query("rooms")
       .filter((q) => (q.eq(q.field("roomId"), args.roomId)))
       .first()
     if (!group) return false
-    return group.users.includes(args.userId)
+    return group.users.includes(userId)
   }
 })
 
 export const createRoom = mutation({
   args: {
-    userId: v.string(),
     name: v.string()
   },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+    if (!identity) {
+      throw new Error("Not Authenticated")
+    }
+    const userId = identity.subject
+
     const lastRoomId = await ctx.db
       .query("rooms")
       .order("desc")
@@ -28,8 +40,8 @@ export const createRoom = mutation({
 
     await ctx.db.insert("rooms", {
       roomId: nextRoomId,
-      owner: args.userId,
-      users: [args.userId],
+      owner: userId,
+      users: [userId],
       name: args.name
     })
   }
@@ -37,33 +49,45 @@ export const createRoom = mutation({
 
 
 // THIS WILL NOT SCALE PAST A FEW HUNDRED ROOMS, FIX IN FUTURE
-export const getUserRoomList = query({
-  args: {
-    userId: v.string()
-  },
-  handler: async (ctx, args) => {
-    const allRooms = await ctx.db.query("rooms").collect()
 
+
+export const getUserRoomList = query({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity()
+    if (identity === null) {
+      throw new Error("Not authenticated")
+    }
+
+    const userId = identity.subject
+
+    const allRooms = await ctx.db.query("rooms").collect()
     const userRooms = allRooms.filter((room) =>
-      room.users.includes(args.userId)
+      room.users.includes(userId)
     )
+
     return userRooms.slice(0, 100)
-  }
-})
+  },
+});
 
 export const deleteRoom = mutation({
   args: {
-    userId: v.string(),
     roomId: v.number()
   },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+    if (!identity) {
+      throw new Error("Not Authenticated")
+    }
+    const userId = identity.subject
+
     const room = await ctx.db
       .query("rooms")
       .filter((q) => q.eq(q.field("roomId"), args.roomId))
-      .filter((q) => q.eq(q.field("owner"), args.userId))
+      .filter((q) => q.eq(q.field("owner"), userId))
       .first()
 
-    if (!room || room.owner !== args.userId) {
+    if (!room || room.owner !== userId) {
       throw new Error("room not found or userId not matched with owner ID")
     }
 

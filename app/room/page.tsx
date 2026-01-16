@@ -1,31 +1,27 @@
 'use client'
 
-import { useAuth } from "@clerk/clerk-react"
 import { useMutation, useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import Link from "next/link"
 import { FormEvent, useState } from "react"
 
 export default function Room() {
-  const { userId } = useAuth()
   const createRoom = useMutation(api.rooms.createRoom)
-  const rooms = useQuery(api.rooms.getUserRoomList, { userId: userId || ''})
 
-  const [roomName, setRoomName] = useState<string> ("")
+  const rooms = useQuery(api.rooms.getUserRoomList)
 
-  const createRoomFunction = (e: FormEvent) => {
+  const [roomName, setRoomName] = useState<string>("")
+ 
+  const createRoomFunction = async (e: FormEvent) => {
     e.preventDefault()
-    if (userId) {
       let roomNameToUse = roomName
       if (roomName == "" || roomName == null) {
         roomNameToUse = "Temp Room Name"
       }
       createRoom({
-        userId: userId,
         name: roomNameToUse
       })
-      setRoomName("")
-    }
+      setRoomName("")  
   }
 
 

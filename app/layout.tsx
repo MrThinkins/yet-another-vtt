@@ -42,7 +42,7 @@ export default function RootLayout({
       // ${geistSans.variable} ${geistMono.variable}${charm.className}
         className={`${quintessential.className} antialiased`}
       >
-        <ClerkProvider dynamic>
+        <ClerkProvider>
           <ConvexClientProvider>{children}</ConvexClientProvider>
         </ClerkProvider>
       </body>

@@ -7,7 +7,6 @@ import DisplayInventory from "./inventory"
 
 interface YetAnotherTTRPGProps {
   creatureInfo: any,  // eslint-disable-line @typescript-eslint/no-explicit-any
-  userId: string,
   onUpdate: (info: object) => void
 }
 
@@ -53,7 +52,6 @@ const starterInfo = {
 
 export default function YetAnotherTTRPG({
   creatureInfo,
-  userId,
   onUpdate
 }: YetAnotherTTRPGProps) {
   
@@ -65,14 +63,7 @@ export default function YetAnotherTTRPG({
 
   const [partToShow, setPartToShow] = useState('abilities')
 
-  function useUserId() {
-    if (userId) {
-      return
-    }
-    return
-    //this is just to fix userId error, probably should be removed, but it might be needed in future.
-  }
-  useUserId()
+  
   console.log(info)
   useEffect(() => {
     if (creatureInfo && Object.keys(creatureInfo).length > 0 && creatureInfo != info) {
