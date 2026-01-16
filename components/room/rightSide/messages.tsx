@@ -10,11 +10,11 @@ interface messagesProps {
 export default function Messages({
   roomId,
 }: messagesProps) {
-  const messages = useQuery(api.messages.get, { roomId: Number(roomId) })
+  const messages = useQuery(api.messages.getMessage, { roomId: Number(roomId) })
   const [messageInput, setMessageInput] = useState<string> ('')
   console.log(messages)
 
-  const send = useMutation(api.messages.send)
+  const send = useMutation(api.messages.sendMessage)
 
   async function submitMessage(e: FormEvent) {
     e.preventDefault()
