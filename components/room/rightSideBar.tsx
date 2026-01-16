@@ -35,7 +35,6 @@ export default function RightSideBar({
         ) : (
           <Settings
             roomId={roomId}
-            userId={userId}
           >
           </Settings>
         )}

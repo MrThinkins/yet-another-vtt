@@ -7,7 +7,7 @@ export const getRoom = query({
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity()
     if (!identity) {
-      throw new Error("Not authenticated")
+      throw new Error("Not Authenticated")
     }
     const userId = identity.subject
 
@@ -22,10 +22,15 @@ export const getRoom = query({
 
 export const createRoom = mutation({
   args: {
-    userId: v.string(),
     name: v.string()
   },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+    if (!identity) {
+      throw new Error("Not Authenticated")
+    }
+    const userId = identity.subject
+
     const lastRoomId = await ctx.db
       .query("rooms")
       .order("desc")
@@ -35,8 +40,8 @@ export const createRoom = mutation({
 
     await ctx.db.insert("rooms", {
       roomId: nextRoomId,
-      owner: args.userId,
-      users: [args.userId],
+      owner: userId,
+      users: [userId],
       name: args.name
     })
   }
@@ -49,36 +54,40 @@ export const createRoom = mutation({
 export const getUserRoomList = query({
   args: {},
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
+    const identity = await ctx.auth.getUserIdentity()
     if (identity === null) {
-      throw new Error("Not authenticated");
+      throw new Error("Not authenticated")
     }
 
-    // Pick what you consider your userId:
-    const userId = identity.subject;        // or identity.tokenIdentifier
+    const userId = identity.subject
 
-    const allRooms = await ctx.db.query("rooms").collect();
+    const allRooms = await ctx.db.query("rooms").collect()
     const userRooms = allRooms.filter((room) =>
       room.users.includes(userId)
-    );
+    )
 
-    return userRooms.slice(0, 100);
+    return userRooms.slice(0, 100)
   },
 });
 
 export const deleteRoom = mutation({
   args: {
-    userId: v.string(),
     roomId: v.number()
   },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+    if (!identity) {
+      throw new Error("Not Authenticated")
+    }
+    const userId = identity.subject
+
     const room = await ctx.db
       .query("rooms")
       .filter((q) => q.eq(q.field("roomId"), args.roomId))
-      .filter((q) => q.eq(q.field("owner"), args.userId))
+      .filter((q) => q.eq(q.field("owner"), userId))
       .first()
 
-    if (!room || room.owner !== args.userId) {
+    if (!room || room.owner !== userId) {
       throw new Error("room not found or userId not matched with owner ID")
     }
 

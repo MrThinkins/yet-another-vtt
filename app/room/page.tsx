@@ -23,7 +23,6 @@ export default function Room() {
         roomNameToUse = "Temp Room Name"
       }
       createRoom({
-        userId: userId,
         name: roomNameToUse
       })
       setRoomName("")
