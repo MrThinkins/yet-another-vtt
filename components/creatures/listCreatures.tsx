@@ -1,12 +1,10 @@
 
 import { useMutation, useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
-import { useAuth } from "@clerk/clerk-react"
 import Link from "next/link"
 
 export default function ListCreatures() {
-  const { userId } = useAuth()
-  const creatures = useQuery(api.creatures.getUserCreatureList, { userId: userId || '' })
+  const creatures = useQuery(api.creatures.getUserCreatureList)
   const deleteCreature = useMutation(api.creatures.deleteUserCreature)
 
   console.log(creatures)
@@ -23,7 +21,7 @@ export default function ListCreatures() {
           <br></br>
           <button 
             className="showOnHoverObject"
-            onClick={() => deleteCreature({userId: userId || "", _id: _id})}
+            onClick={() => deleteCreature({ _id: _id})}
           >
             delete creature
           </button>

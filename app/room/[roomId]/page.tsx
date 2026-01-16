@@ -16,11 +16,9 @@ interface RoomProps {
 
 export default function Room( { params }: RoomProps ) {
   const param = use(params)
-  const { userId } = useAuth()
   const { roomId } = param
   const aloudInRoom = useQuery(api.rooms.getRoom, { roomId: Number(roomId) })
 
-  console.log(userId)
   console.log(`in room: ${aloudInRoom}`)
 
   function toggleRightSide() {
@@ -35,7 +33,6 @@ export default function Room( { params }: RoomProps ) {
 
         <VttMap
           roomId={roomId}
-          userId={userId || ''}
         >
         </VttMap>
         <div onClick={toggleRightSide} className="rightSideToggler material-symbols-outlined">
@@ -45,7 +42,6 @@ export default function Room( { params }: RoomProps ) {
       <div className="rightSideBar">
         <RightSideBar
           roomId={roomId}
-          userId={userId || ''}
         >
         </RightSideBar>
       </div>

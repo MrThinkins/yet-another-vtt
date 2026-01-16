@@ -4,13 +4,11 @@ import Settings from "./rightSide/settings"
 
 
 interface rightSideBarProps {
-  roomId: string,
-  userId: string
+  roomId: string
 }
 
 export default function RightSideBar({
-  roomId,
-  userId
+  roomId
 }: rightSideBarProps) {
   
   const [partToShow, setPartToShow] = useState<string> ('messages')

@@ -19,18 +19,15 @@ export default function CreateCreature() {
   const [creationPart, setCreationState] = useState('')
 
   const addCreature = useMutation(api.creatures.addCreature)
-  const { userId } = useAuth()
   const router = useRouter()
 
   function addCreatureFunction(creatureInfo = {}, creatureName = 'new creature') {
-    if (userId) {
-      addCreature({
-        userId: userId,
-        creatureType: "yet_another_ttrpg",
-        creatureName: creatureName,
-        creatureInfo: creatureInfo
-      })
-    }
+    addCreature({
+      creatureType: "yet_another_ttrpg",
+      creatureName: creatureName,
+      creatureInfo: creatureInfo
+    })
+ 
     router.push('../creatures')
   }
 

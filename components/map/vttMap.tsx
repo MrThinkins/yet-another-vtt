@@ -4,7 +4,6 @@ import './map.css'
 
 interface vttMapProps {
   roomId: string,
-  userId: string
 }
 
 const minZoom = 0.1
@@ -13,7 +12,6 @@ const maxZoom = 10
 
 export default function VttMap({
   roomId, // eslint-disable-line
-  userId // eslint-disable-line
 }: vttMapProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const divRef = useRef<HTMLDivElement>(null)
