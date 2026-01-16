@@ -31,6 +31,10 @@ export const createRoom = mutation({
     }
     const userId = identity.subject
 
+    if (args.name == "null") {
+      args.name = identity.nickname + " room"
+    } 
+
     const lastRoomId = await ctx.db
       .query("rooms")
       .order("desc")
@@ -58,6 +62,7 @@ export const getUserRoomList = query({
     if (identity === null) {
       throw new Error("Not authenticated")
     }
+    console.log(identity)
 
     const userId = identity.subject
 
