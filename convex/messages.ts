@@ -34,7 +34,6 @@ export const send = mutation({
   args: {
     roomId: v.number(),
     message: v.string(),
-    userName: v.string(),
     timeSent: v.number() 
   },
   handler: async (ctx, args) => {
@@ -61,7 +60,7 @@ export const send = mutation({
 
     const newMessage ={
       message: args.message,
-      userName: args.userName,
+      userName: String(identity.nickname),
       userId: userId,
       timeSent: args.timeSent
     }

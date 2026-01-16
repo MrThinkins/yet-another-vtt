@@ -18,15 +18,14 @@ export default function Messages({
 
   async function submitMessage(e: FormEvent) {
     e.preventDefault()
-    sendMessage(messageInput, 'temp', Date.now())
+    sendMessage(messageInput, Date.now())
     setMessageInput('')
   }
 
-  async function sendMessage(message: string, userName: string, timeSent: number) {
+  async function sendMessage(message: string, timeSent: number) {
     await send({
       roomId: Number(roomId),
       message,
-      userName,
       timeSent
     })
   }

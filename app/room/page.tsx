@@ -17,7 +17,7 @@ export default function Room() {
     e.preventDefault()
       let roomNameToUse = roomName
       if (roomName == "" || roomName == null) {
-        roomNameToUse = "Temp Room Name"
+        roomNameToUse = "null"
       }
       createRoom({
         name: roomNameToUse
