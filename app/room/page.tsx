@@ -4,6 +4,7 @@ import { useMutation, useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import Link from "next/link"
 import { FormEvent, useState } from "react"
+import Header from "@/components/header"
 
 export default function Room() {
   const createRoom = useMutation(api.rooms.createRoom)
@@ -27,6 +28,8 @@ export default function Room() {
 
   return (
     <div>
+      <Header>
+      </Header>
       {rooms?.map(({ roomId, name }, index) => (
         <div key={index}>
           <Link href={`/room/${roomId}`}>
@@ -44,9 +47,11 @@ export default function Room() {
         <input
           id="roomName"
           type="text"
+          placeholder="Input room name here."
           value={roomName}
           onChange={(e) => setRoomName(e.target.value)}
         ></input>
+        <br></br>
         <button type="submit">
           Create New Room
         </button>
