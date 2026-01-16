@@ -3,7 +3,6 @@
 import { use } from 'react'
 import './room.css'
 import RightSideBar from '@/components/room/rightSideBar'
-import { useAuth } from '@clerk/clerk-react'
 import { useQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import VttMap from '@/components/map/vttMap'

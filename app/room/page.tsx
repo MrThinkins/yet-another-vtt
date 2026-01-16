@@ -3,7 +3,7 @@
 import { useMutation, useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import Link from "next/link"
-import { FormEvent, useState, useEffect } from "react"
+import { FormEvent, useState } from "react"
 
 export default function Room() {
   const createRoom = useMutation(api.rooms.createRoom)
