@@ -29,7 +29,6 @@ export default function RightSideBar({
         {partToShow == 'messages' ? (
           <Messages
             roomId={roomId}
-            userId={userId}
           >
           </Messages>
         ) : (
