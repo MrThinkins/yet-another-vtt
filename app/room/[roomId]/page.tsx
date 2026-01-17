@@ -1,9 +1,9 @@
 'use client'
 
-import { use } from 'react'
+import { use, useState, FormEvent } from 'react'
 import './room.css'
 import RightSideBar from '@/components/room/rightSideBar'
-import { useQuery } from 'convex/react'
+import { useMutation, useQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import VttMap from '@/components/map/vttMap'
 
@@ -17,6 +17,16 @@ export default function Room( { params }: RoomProps ) {
   const param = use(params)
   const { roomId } = param
   const aloudInRoom = useQuery(api.rooms.getRoom, { roomId: Number(roomId) })
+  const submitRoomPassword = useMutation(api.rooms.submitRoomPassword)
+
+  const [roomPassword, setRoomPassword] = useState<number>()
+  
+  const submitRoomPasswordFunction = async (e: FormEvent) => {
+    e.preventDefault()
+    if (typeof roomPassword == "number") {
+      submitRoomPassword({ roomId: Number(roomId), roomPassword: roomPassword})
+    }
+  }
 
   console.log(`in room: ${aloudInRoom}`)
 
@@ -29,7 +39,6 @@ export default function Room( { params }: RoomProps ) {
     {aloudInRoom == true ? (
     <div className="mainGrid">
       <div>
-
         <VttMap
           roomId={roomId}
         >
@@ -48,7 +57,27 @@ export default function Room( { params }: RoomProps ) {
     </div>
     ) : (
     <div>
-      You are not aloud in this room
+      <form
+        onSubmit={submitRoomPasswordFunction}
+      >
+        <label
+          htmlFor='roomPassword'
+        >
+          Enter the Room Password:
+        </label>
+        <input
+          id="roomPassword"
+          type="number"
+          value={roomPassword}
+          onChange={(e) => setRoomPassword(e.target.valueAsNumber)}
+        ></input>
+        <br></br>
+        <button
+          type="submit"
+        >
+          Enter Password
+        </button>
+      </form>
     </div>
     )}
     </div>  
