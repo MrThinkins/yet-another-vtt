@@ -10,6 +10,7 @@
 
 import type * as creatures from "../creatures.js";
 import type * as messages from "../messages.js";
+import type * as migration from "../migration.js";
 import type * as myFunctions from "../myFunctions.js";
 import type * as rooms from "../rooms.js";
 
@@ -22,6 +23,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   creatures: typeof creatures;
   messages: typeof messages;
+  migration: typeof migration;
   myFunctions: typeof myFunctions;
   rooms: typeof rooms;
 }>;

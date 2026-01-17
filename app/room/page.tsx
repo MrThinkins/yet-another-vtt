@@ -12,6 +12,7 @@ export default function Room() {
   const rooms = useQuery(api.rooms.getUserRoomList)
 
   const [roomName, setRoomName] = useState<string>("")
+  const [usePassword, setUsePassword] = useState<boolean>(true)
  
   const createRoomFunction = async (e: FormEvent) => {
     e.preventDefault()
@@ -20,7 +21,8 @@ export default function Room() {
         roomNameToUse = "null"
       }
       createRoom({
-        name: roomNameToUse
+        name: roomNameToUse,
+        usePassword: usePassword
       })
       setRoomName("")  
   }
@@ -50,6 +52,16 @@ export default function Room() {
           placeholder="Input room name here."
           value={roomName}
           onChange={(e) => setRoomName(e.target.value)}
+        ></input>
+        <br></br>
+        <label htmlFor="usePassword">
+          Use Password? (Recommended):
+        </label>
+        <input 
+          type="checkbox"
+          id="usePassword"
+          checked={usePassword}
+          onChange={(e) => setUsePassword(e.target.checked)}
         ></input>
         <br></br>
         <button type="submit">
