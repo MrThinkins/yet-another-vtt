@@ -16,7 +16,14 @@ export const getRoom = query({
       .filter((q) => (q.eq(q.field("roomId"), args.roomId)))
       .first()
     if (!group) return false
-    return group.users.includes(userId)
+
+    const locked = group.usePassword
+
+    if (locked) {
+      return group.users.includes(userId)
+    } else {
+      return true
+    }
   }
 })
 
@@ -116,6 +123,31 @@ export const deleteRoom = mutation({
     }
     for (const message of roomMessages) {
       await ctx.db.delete(message._id)
+    }
+  }
+})
+
+export const submitRoomPassword = mutation({
+  args: {
+    roomId: v.number(),
+    roomPassword: v.number()
+  }, 
+  handler: async (ctx, args) => {
+    const room = await ctx.db
+      .query("rooms")
+      .filter((q) => q.eq(q.field("roomId"), args.roomId))
+      .first()
+
+    if (room?.password == args.roomPassword) {
+      const identity = await ctx.auth.getUserIdentity()
+      if (!identity) {
+        throw new Error("Not Authenticated")
+      }
+      const userId = identity.subject
+
+      await ctx.db.patch(room._id, {
+        users: [...room.users, userId]
+      })
     }
   }
 })
