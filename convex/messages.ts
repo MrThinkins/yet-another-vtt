@@ -78,3 +78,41 @@ export const sendMessage = mutation({
     })
   }
 })
+
+export const deleteMessage = mutation({
+  args: {
+    index: v.number(),
+    roomId: v.number()
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+    if (!identity) {
+      throw new Error("Not Authenticated")
+    }
+    const userId = identity.subject
+
+    const preGroup = await ctx.db
+      .query("rooms")
+      .filter((q) => (q.eq(q.field("roomId"), args.roomId)))
+      .first()
+    
+    if (!preGroup || !preGroup.users.includes(userId)) {
+      return
+    }
+    const group = await ctx.db
+      .query("messages")
+      .filter((q) => q.eq(q.field("roomId"), args.roomId))
+      .first()
+
+    if (!group) {
+      return
+    }
+
+    const messages = [...group.messages]
+    messages.splice(args.index, 1)
+
+    await ctx.db.patch(group._id, {
+      messages: messages
+    })
+  }
+})

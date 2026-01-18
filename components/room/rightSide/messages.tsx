@@ -11,6 +11,7 @@ export default function Messages({
   roomId,
 }: messagesProps) {
   const messages = useQuery(api.messages.getMessage, { roomId: Number(roomId) })
+  const deleteMessage = useMutation(api.messages.deleteMessage)
   const [messageInput, setMessageInput] = useState<string> ('')
   console.log(messages)
 
@@ -37,15 +38,26 @@ export default function Messages({
     }
   }
 
+  async function deleteMessageFunction(index: number) {
+    deleteMessage({ roomId: Number(roomId), index: index })
+    console.log("deleteMessage function called for " + index)
+  }
+
   return (
     <div>
       {messages?.map(({message, userName}, index) => (
-        <div key={index}>
+        <div key={index} className="messageList showOnHover">
           <div>
           {userName}:
           </div>
           {message}
           <br></br>
+          <div
+            className="showOnHoverObject cursorPointer messageDeleteButton material-symbols-outlined"
+            onClick={() => deleteMessageFunction(index)}
+          >
+            delete
+          </div>
         </div>
       ))}
       
@@ -58,6 +70,7 @@ export default function Messages({
         </TextareaAutosize>
         <button type="submit">Send Message</button>
       </form>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     </div>
   )
 }
