@@ -45,3 +45,13 @@ html, body {
   display: grid;
   grid-template-columns: auto auto;
 }
+
+.messageList {
+  position: relative;
+}
+
+.messageDeleteButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+}

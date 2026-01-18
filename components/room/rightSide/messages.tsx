@@ -46,14 +46,14 @@ export default function Messages({
   return (
     <div>
       {messages?.map(({message, userName}, index) => (
-        <div key={index}>
+        <div key={index} className="messageList showOnHover">
           <div>
           {userName}:
           </div>
           {message}
           <br></br>
           <div
-            className="showOnHover material-symbols-outlined"
+            className="showOnHoverObject cursorPointer messageDeleteButton material-symbols-outlined"
             onClick={() => deleteMessageFunction(index)}
           >
             delete
