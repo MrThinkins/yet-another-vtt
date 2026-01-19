@@ -74,7 +74,7 @@ export const getUserRoomList = query({
   args: {},
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity()
-    if (identity === null) {
+    if (!identity) {
       throw new Error("Not authenticated")
     }
     console.log(identity)
@@ -96,7 +96,7 @@ export const getRoomPasswordInfo = query({
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity()
-    if (identity === null) {
+    if (!identity) {
       throw new Error("Not Authenticated")
     }
     const userId = identity.subject
@@ -125,7 +125,7 @@ export const toggleUsePassword = mutation({
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity()
-    if (identity === null) {
+    if (!identity) {
       throw new Error("Not Authenticated")
     }
     const userId = identity.subject
@@ -213,4 +213,29 @@ export const submitRoomPassword = mutation({
       })
     }
   }
+})
+
+export const getIsOwner = query({
+  args: {
+    roomId: v.number()
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+
+    if (!identity) {
+      throw new Error("Not Authenticated")
+    }
+    const userId = identity.subject
+
+    const roomInfo = await ctx.db
+      .query("rooms")
+      .filter((q) => q.eq(q.field("roomId"), args.roomId))
+      .first() 
+    
+    if (roomInfo?.owner == userId) {
+      return true
+    } else {
+      return false
+    }
+  },
 })
