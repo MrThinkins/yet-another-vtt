@@ -1,5 +1,5 @@
 import { api } from "@/convex/_generated/api";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -11,6 +11,7 @@ export default function Settings({
   roomId
 }: settingsProps) {
   const deleteRoom = useMutation(api.rooms.deleteRoom)
+  const passwordInfo = useQuery(api.rooms.getRoomPasswordInfo, { roomId: Number(roomId) })
   const router = useRouter()
 
   function deleteRoomFunction() {
@@ -26,6 +27,23 @@ export default function Settings({
       <Link href="../">
         Exit
       </Link>
+      <br></br>
+      {passwordInfo ? (
+        <div>
+          Use Password: {passwordInfo.usePassword ? (
+            <div>
+              true
+            </div>
+          ) : (
+            <div>
+              false
+            </div>
+          )}
+        </div>
+      ) : (
+        <div>
+        </div>
+      )}
       <br></br>
       <button
         onClick={deleteRoomFunction}

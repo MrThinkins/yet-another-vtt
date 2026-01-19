@@ -90,6 +90,35 @@ export const getUserRoomList = query({
   },
 });
 
+export const getRoomPasswordInfo = query({
+  args: {
+    roomId: v.number()
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+    if (identity === null) {
+      throw new Error("Not Authenticated")
+    }
+    const userId = identity.subject
+
+    const roomInfo = await ctx.db
+      .query("rooms")
+      .filter((q) => q.eq(q.field("roomId"), args.roomId))
+      .filter((q) => q.eq(q.field("owner"), userId))
+      .first()
+
+    if (roomInfo) {
+      const passwordInfo = {
+        usePassword: roomInfo.usePassword,
+        passWord: roomInfo.password
+      }
+      return passwordInfo
+    } else {
+      return
+    }
+  }
+})
+
 export const deleteRoom = mutation({
   args: {
     roomId: v.number()
