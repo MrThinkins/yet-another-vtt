@@ -119,6 +119,40 @@ export const getRoomPasswordInfo = query({
   }
 })
 
+export const toggleUsePassword = mutation({
+  args: {
+    roomId: v.number()
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+    if (identity === null) {
+      throw new Error("Not Authenticated")
+    }
+    const userId = identity.subject
+
+    const room = await ctx.db
+      .query("rooms")
+      .filter((q) => q.eq(q.field("roomId"), args.roomId))
+      .filter((q) => q.eq(q.field("owner"), userId))
+      .first()
+
+    if (room) {
+      if (room.usePassword) {
+        await ctx.db.patch(room._id, {
+          usePassword: false,
+          password: undefined
+        })
+      } else {
+        const password = Math.floor(Math.random() * 899999) + 100000
+        await ctx.db.patch(room._id, {
+          usePassword: true,
+          password: password
+        })
+      }
+    }
+  }
+})
+
 export const deleteRoom = mutation({
   args: {
     roomId: v.number()
