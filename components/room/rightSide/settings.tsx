@@ -13,8 +13,9 @@ export default function Settings({
 }: settingsProps) {
   const deleteRoom = useMutation(api.rooms.deleteRoom)
   const passwordInfo = useQuery(api.rooms.getRoomPasswordInfo, { roomId: Number(roomId) })
+  const isOwner = useQuery(api.rooms.getIsOwner, { roomId: Number(roomId) })
   const toggleUsePassword = useMutation(api.rooms.toggleUsePassword)
-  const [showPassword, setShowPassword] = useState(true)
+  const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
 
   function deleteRoomFunction() {
@@ -35,7 +36,7 @@ export default function Settings({
         Exit
       </Link>
       <br></br>
-      {passwordInfo ? (
+      {isOwner ? (
         <div>
           <label
             htmlFor="usePassword"
@@ -45,11 +46,11 @@ export default function Settings({
           <input 
             type="checkbox" 
             id="usePassword"
-            checked={passwordInfo.usePassword}
+            checked={passwordInfo?.usePassword}
             onChange={toggleUsePasswordFunction}
           >
           </input>
-          {passwordInfo.usePassword ? (
+          {passwordInfo?.usePassword ? (
             <div>
               <label
                 htmlFor="showPassword"
@@ -77,18 +78,18 @@ export default function Settings({
 
             </div>
           )}
+          <button
+            onClick={deleteRoomFunction}
+          >
+            Delete room
+          </button>
           
         </div>
       ) : (
         <div>
         </div>
       )}
-      <br></br>
-      <button
-        onClick={deleteRoomFunction}
-      >
-        Delete room
-      </button>
+      
     </div>
 
   )
