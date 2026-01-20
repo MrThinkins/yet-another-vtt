@@ -14,6 +14,7 @@ export default function Messages({
 }: messagesProps) {
   const messages = useQuery(api.messages.getMessage, { roomId: roomId })
   const deleteMessage = useMutation(api.messages.deleteMessage)
+  const checkAndSendCommand = useMutation(api.messages.checkAndSendCommand)
   const [messageInput, setMessageInput] = useState<string> ('')
 
   const send = useMutation(api.messages.sendMessage)
@@ -26,13 +27,20 @@ export default function Messages({
 
   async function sendMessage(message: string, timeSent: number) {
     console.log(message)
-    const messageToSend = parseMessage(message)
-    console.log(messageToSend)
+    const messageToSendObject = parseMessage(message)
+    console.log(messageToSendObject)
     await send({
       roomId: roomId,
-      message: messageToSend,
+      message: messageToSendObject.messageToSend,
       timeSent
     })
+    if (messageToSendObject.sendCommand) {
+      checkAndSendCommand({ 
+        message: messageToSendObject.messageToSend,
+        roomId: roomId,
+        timeSent: timeSent
+       })
+    }
   }
 
   async function onKeyDown(e: KeyboardEvent) {
