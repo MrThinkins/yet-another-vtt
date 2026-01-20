@@ -23,6 +23,12 @@ html, body {
 .rightSideBarGrid { 
   display: grid;
   grid-template-rows: 2rem auto;
+  height: 100vh;
+  background-color: var(--background);
+}
+
+.rightSideBarContent {
+  overflow: hidden; 
 }
 
 .mainGrid.collapsed .rightSideBar {
@@ -44,6 +50,7 @@ html, body {
 .rightSideBarNavGrid {
   display: grid;
   grid-template-columns: auto auto;
+  background-color: var(--background-highlight);
 }
 
 .messageList {
@@ -54,4 +61,8 @@ html, body {
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.textPadding {
+  padding: 0.25rem;
 }

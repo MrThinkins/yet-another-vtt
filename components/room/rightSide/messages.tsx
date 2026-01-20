@@ -2,6 +2,7 @@ import { useQuery, useMutation } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import TextareaAutosize from 'react-textarea-autosize'
 import { useState, FormEvent, KeyboardEvent } from "react"
+import './messages.css'
 
 interface messagesProps {
   roomId: string
@@ -44,11 +45,18 @@ export default function Messages({
   }
 
   return (
-    <div>
-      {messages?.map(({message, userName}, index) => (
-        <div key={index} className="messageList showOnHover">
-          <div>
-          {userName}:
+    <div
+      className="messagesContainer"
+    >
+      <div
+        className="messagesList "
+      >
+        {messages?.map(({message, userName}, index) => (
+        <div key={index} className="messageList showOnHover textPadding">
+          <div
+            className="userName"
+          >  
+            {userName}:
           </div>
           {message}
           <br></br>
@@ -59,13 +67,15 @@ export default function Messages({
             delete
           </div>
         </div>
-      ))}
-      
+        ))}
+      </div>
+
       <form onSubmit={submitMessage} >
         <TextareaAutosize
           onKeyDown={onKeyDown}
           value={messageInput}
           onChange={(e) => setMessageInput(e.target.value)}
+          className="textareaAuto"
         >
         </TextareaAutosize>
         <button type="submit">Send Message</button>
