@@ -14,9 +14,9 @@ interface RoomProps {
 }
 
 export default function Room( { params }: RoomProps ) {
-  const param = use(params)
-  const { roomId } = param
-  const aloudInRoom = useQuery(api.rooms.getRoom, { roomId: Number(roomId) })
+  const { roomId: roomIdString } = use(params)
+  const roomId = Number(roomIdString) 
+  const aloudInRoom = useQuery(api.rooms.getRoom, { roomId: roomId })
   const submitRoomPassword = useMutation(api.rooms.submitRoomPassword)
 
   const [roomPassword, setRoomPassword] = useState<number>()
@@ -24,7 +24,7 @@ export default function Room( { params }: RoomProps ) {
   const submitRoomPasswordFunction = async (e: FormEvent) => {
     e.preventDefault()
     if (typeof roomPassword == "number") {
-      submitRoomPassword({ roomId: Number(roomId), roomPassword: roomPassword})
+      submitRoomPassword({ roomId: roomId, roomPassword: roomPassword})
     }
   }
 
