@@ -177,7 +177,7 @@ export const checkAndSendCommand = mutation({
           return
         }
 
-        const messageToSend = `${userName} rolled a ${diceRoll}`
+        const messageToSend = `${userName} rolled ${diceRoll}`
         const newMessage = {
           message: messageToSend,
           userName: "Bot",
