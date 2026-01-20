@@ -5,15 +5,15 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface settingsProps {
-  roomId: string
+  roomId: number
 }
 
 export default function Settings({
   roomId
 }: settingsProps) {
   const deleteRoom = useMutation(api.rooms.deleteRoom)
-  const passwordInfo = useQuery(api.rooms.getRoomPasswordInfo, { roomId: Number(roomId) })
-  const isOwner = useQuery(api.rooms.getIsOwner, { roomId: Number(roomId) })
+  const passwordInfo = useQuery(api.rooms.getRoomPasswordInfo, { roomId: roomId })
+  const isOwner = useQuery(api.rooms.getIsOwner, { roomId: roomId })
   const toggleUsePassword = useMutation(api.rooms.toggleUsePassword)
   const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
@@ -22,13 +22,13 @@ export default function Settings({
     const confirmRoomDelete = confirm("Are you sure that you want to delete the room?")
 
     if (confirmRoomDelete) {
-      deleteRoom({ roomId: Number(roomId) })
+      deleteRoom({ roomId: roomId })
     }
     router.push('./')
   }
 
   function toggleUsePasswordFunction() {
-    toggleUsePassword({ roomId: Number(roomId) })
+    toggleUsePassword({ roomId: roomId })
   }
   return (
     <div>

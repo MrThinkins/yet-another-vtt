@@ -3,7 +3,7 @@ import DrawFrame from "./drawFrame"
 import './map.css'
 
 interface vttMapProps {
-  roomId: string,
+  roomId: number,
 }
 
 const minZoom = 0.1

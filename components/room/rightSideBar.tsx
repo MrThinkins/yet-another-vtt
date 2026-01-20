@@ -4,7 +4,7 @@ import Settings from "./rightSide/settings"
 
 
 interface rightSideBarProps {
-  roomId: string
+  roomId: number
 }
 
 export default function RightSideBar({
