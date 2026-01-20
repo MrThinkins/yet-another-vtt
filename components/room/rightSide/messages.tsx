@@ -48,22 +48,26 @@ export default function Messages({
     <div
       className="messages-container"
     >
-      {messages?.map(({message, userName}, index) => (
+      <div
+        className="messages-list"
+      >
+        {messages?.map(({message, userName}, index) => (
         <div key={index} className="messageList showOnHover">
           <div>
-          {userName}:
+            {userName}:
+            </div>
+            {message}
+            <br></br>
+            <div
+              className="showOnHoverObject cursorPointer messageDeleteButton material-symbols-outlined"
+              onClick={() => deleteMessageFunction(index)}
+            >
+              delete
+            </div>
           </div>
-          {message}
-          <br></br>
-          <div
-            className="showOnHoverObject cursorPointer messageDeleteButton material-symbols-outlined"
-            onClick={() => deleteMessageFunction(index)}
-          >
-            delete
-          </div>
-        </div>
-      ))}
-      
+        ))}
+      </div>
+
       <form onSubmit={submitMessage} >
         <TextareaAutosize
           onKeyDown={onKeyDown}

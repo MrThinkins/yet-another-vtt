@@ -1,9 +1,7 @@
-
-
 .messages-container {
-  display: flex;
-  flex-direction: column;
   height: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto;
 }
 
 .messages-container form {
@@ -11,6 +9,10 @@
   width: 100%;
   padding: 0.25rem;
   background: var(--background-highlight);
+}
+
+.messages-list {
+  overflow-y: auto;
 }
 
 .textarea-auto {

@@ -27,6 +27,10 @@ html, body {
   background-color: var(--background);
 }
 
+.rightSideBarContent {
+  overflow: hidden; 
+}
+
 .mainGrid.collapsed .rightSideBar {
   width: 0;
   padding: 0;

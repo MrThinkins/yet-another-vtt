@@ -23,7 +23,9 @@ export default function RightSideBar({
         </div>
 
       </div>
-      <div>
+      <div
+        className="rightSideBarContent"
+      >
         {partToShow == 'messages' ? (
           <Messages
             roomId={roomId}
