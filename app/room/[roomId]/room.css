@@ -62,3 +62,7 @@ html, body {
   top: 0;
   right: 0;
 }
+
+.textPadding {
+  padding: 0.25rem;
+}

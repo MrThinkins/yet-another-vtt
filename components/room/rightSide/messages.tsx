@@ -46,25 +46,27 @@ export default function Messages({
 
   return (
     <div
-      className="messages-container"
+      className="messagesContainer"
     >
       <div
-        className="messages-list"
+        className="messagesList "
       >
         {messages?.map(({message, userName}, index) => (
-        <div key={index} className="messageList showOnHover">
-          <div>
+        <div key={index} className="messageList showOnHover textPadding">
+          <div
+            className="userName"
+          >  
             {userName}:
-            </div>
-            {message}
-            <br></br>
-            <div
-              className="showOnHoverObject cursorPointer messageDeleteButton material-symbols-outlined"
-              onClick={() => deleteMessageFunction(index)}
-            >
-              delete
-            </div>
           </div>
+          {message}
+          <br></br>
+          <div
+            className="showOnHoverObject cursorPointer messageDeleteButton material-symbols-outlined"
+            onClick={() => deleteMessageFunction(index)}
+          >
+            delete
+          </div>
+        </div>
         ))}
       </div>
 
@@ -73,7 +75,7 @@ export default function Messages({
           onKeyDown={onKeyDown}
           value={messageInput}
           onChange={(e) => setMessageInput(e.target.value)}
-          className="textarea-auto"
+          className="textareaAuto"
         >
         </TextareaAutosize>
         <button type="submit">Send Message</button>
