@@ -1,0 +1,19 @@
+
+
+.messages-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.messages-container form {
+  margin-top: auto;
+  width: 100%;
+  padding: 0.25rem;
+  background: var(--background-highlight);
+}
+
+.textarea-auto {
+  /* not sure if this is a good idea, but it works for now and shouldn't break unless I change the right side bar width */
+  width: 15rem; 
+}
