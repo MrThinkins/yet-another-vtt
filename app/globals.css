@@ -111,3 +111,7 @@ a {
   top: 50%;
   transform: translateY(-42.5%)
 }
+
+.preWrap {
+  white-space: pre-wrap;
+}

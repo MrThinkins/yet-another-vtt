@@ -3,6 +3,7 @@ import { api } from "@/convex/_generated/api"
 import TextareaAutosize from 'react-textarea-autosize'
 import { useState, FormEvent, KeyboardEvent } from "react"
 import './messages.css'
+import parseMessage from "./sendMessage"
 
 interface messagesProps {
   roomId: number
@@ -14,7 +15,6 @@ export default function Messages({
   const messages = useQuery(api.messages.getMessage, { roomId: roomId })
   const deleteMessage = useMutation(api.messages.deleteMessage)
   const [messageInput, setMessageInput] = useState<string> ('')
-  console.log(messages)
 
   const send = useMutation(api.messages.sendMessage)
 
@@ -25,9 +25,12 @@ export default function Messages({
   }
 
   async function sendMessage(message: string, timeSent: number) {
+    console.log(message)
+    const messageToSend = parseMessage(message)
+    console.log(messageToSend)
     await send({
       roomId: roomId,
-      message,
+      message: messageToSend,
       timeSent
     })
   }
@@ -52,7 +55,7 @@ export default function Messages({
         className="messagesList "
       >
         {messages?.map(({message, userName}, index) => (
-        <div key={index} className="messageList showOnHover textPadding">
+        <div key={index} className="messageList showOnHover textPadding preWrap">
           <div
             className="userName"
           >  
