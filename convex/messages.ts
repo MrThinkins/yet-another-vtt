@@ -165,7 +165,7 @@ export const checkAndSendCommand = mutation({
             for (let j = i + 1; j <= message.length; j++) {
               if (Number.isFinite(Number(message[j - 1])) && message[j] == "d" && Number.isFinite(Number(message[j + 1]))) {
                 console.log('dice roller is broken now')
-                placeTracker = 1
+                // placeTracker = 1
               }
             }
             if (placeTracker == 4) {
