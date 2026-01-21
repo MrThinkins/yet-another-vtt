@@ -117,6 +117,7 @@ export const deleteMessage = mutation({
   }
 })
 
+// This is janky, improve it later
 export const checkAndSendCommand = mutation({
   args: {
     message: v.string(),
@@ -131,6 +132,9 @@ export const checkAndSendCommand = mutation({
     const userName = identity.nickname
     const userId = identity.subject
 
+    let subOrAdd = ''
+    let numToSubtract = '0'
+    let numToAdd = ''
     let numberOfDice = ''
     let diceSize = ''
     let placeTracker: number = 1
@@ -155,6 +159,40 @@ export const checkAndSendCommand = mutation({
         } else if (placeTracker == 4) {
           if (Number.isFinite(Number(message[i]))) {
             diceSize += message[i]
+          } else if (message[i] == '+' || message[i] == '-') {
+            for (let j = i + 1; j <= message.length; j++) {
+              if (Number.isFinite(Number(message[j - 1])) && message[j] == "d" && Number.isFinite(Number(message[j + 1]))) {
+                console.log('dice roller is broken now')
+                placeTracker = 1
+              }
+            }
+            if (placeTracker == 4) {
+              placeTracker = 5
+              if (message[i] == '-') {
+                placeTracker = 6
+                subOrAdd = 'subtract'
+              } else if (message[i] == '+') {
+                placeTracker = 6
+                subOrAdd = 'add'
+              }
+            }
+          }
+        } else if (placeTracker == 5) {
+          // if (message[i - 1] == '-') {
+          //   placeTracker = 6
+          //   subOrAdd = 'subtract'
+          // } else if (message[i - 1] == '+') {
+          //   placeTracker = 6
+          //   subOrAdd = 'add'
+          // }
+        } else if (placeTracker == 6) {
+          if (Number.isFinite(Number(message[i]))) {
+            if (subOrAdd == 'subtract') {
+              numToSubtract += message[i]
+              console.log(message[i])
+            } else {
+              numToAdd += message[i]
+            }
           }
         }
       }
@@ -162,6 +200,11 @@ export const checkAndSendCommand = mutation({
         let diceRoll = 0
         for (let i = 0; i < Number(numberOfDice); i++) {
           diceRoll += Math.floor(Math.random() * Number(diceSize)) + 1
+        }
+        if (subOrAdd == 'subtract') {
+          diceRoll -= Number(numToSubtract)
+        } else if (subOrAdd == 'add') {
+          diceRoll += Number(numToAdd)
         }
 
         console.log("diceRoll " + diceRoll)
