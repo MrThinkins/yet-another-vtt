@@ -1,7 +1,7 @@
 export default function parseMessage(message: string) {
   // let messageToSend= message.replaceAll('\n', '<br></br>')
-  let messageToSend = message
-  let sendCommand = checkForCommands(message)
+  const messageToSend = message
+  const sendCommand = checkForCommands(message)
 
   return {
     messageToSend: messageToSend,
@@ -10,6 +10,6 @@ export default function parseMessage(message: string) {
 }
 
 function checkForCommands(message: string) {
-  let messageToSend = message.includes("/r")
+  const messageToSend = message.includes("/r")
   return messageToSend
 }
