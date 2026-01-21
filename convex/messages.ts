@@ -135,9 +135,11 @@ export const checkAndSendCommand = mutation({
     let subOrAdd = ''
     let numToSubtract = '0'
     let numToAdd = ''
-    let numberOfDice = ''
-    let diceSize = ''
+    let loopCount = 0
+    let numberOfDice = ['']
+    let diceSize = ['']
     let placeTracker: number = 1
+    let diceRolls: Array<number> = []
     if (args.message.includes("/r")) {
       let message = args.message
 
@@ -154,11 +156,11 @@ export const checkAndSendCommand = mutation({
           if (message[i] == 'd') {
             placeTracker = 4
           } else if (Number.isFinite(Number(message[i]))) {
-            numberOfDice += message[i]
+            numberOfDice[loopCount] += message[i]
           }
         } else if (placeTracker == 4) {
           if (Number.isFinite(Number(message[i]))) {
-            diceSize += message[i]
+            diceSize[loopCount] += message[i]
           } else if (message[i] == '+' || message[i] == '-') {
             for (let j = i + 1; j <= message.length; j++) {
               if (Number.isFinite(Number(message[j - 1])) && message[j] == "d" && Number.isFinite(Number(message[j + 1]))) {
@@ -198,8 +200,9 @@ export const checkAndSendCommand = mutation({
       }
       if (placeTracker >= 4) {
         let diceRoll = 0
-        for (let i = 0; i < Number(numberOfDice); i++) {
-          diceRoll += Math.floor(Math.random() * Number(diceSize)) + 1
+        for (let i = 0; i < Number(numberOfDice[loopCount]); i++) {
+          diceRolls.push(Math.floor(Math.random() * Number(diceSize[loopCount])) + 1)
+          diceRoll +=  diceRolls[i]
         }
         if (subOrAdd == 'subtract') {
           diceRoll -= Number(numToSubtract)
@@ -207,7 +210,7 @@ export const checkAndSendCommand = mutation({
           diceRoll += Number(numToAdd)
         }
 
-        console.log("diceRoll " + diceRoll)
+        console.log("diceRoll " + diceRoll )
 
         const preGroup = await ctx.db
           .query("rooms")
@@ -220,7 +223,7 @@ export const checkAndSendCommand = mutation({
           return
         }
 
-        const messageToSend = `${userName} rolled ${diceRoll}`
+        const messageToSend = `${userName} rolled ${diceRoll} \n ${diceRolls}`
         const newMessage = {
           message: messageToSend,
           userName: "Bot",
