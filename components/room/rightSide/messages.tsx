@@ -3,6 +3,7 @@ import { api } from "@/convex/_generated/api"
 import TextareaAutosize from 'react-textarea-autosize'
 import { useState, FormEvent, KeyboardEvent } from "react"
 import './messages.css'
+import parseMessage from "./sendMessage"
 
 interface messagesProps {
   roomId: number
@@ -13,8 +14,8 @@ export default function Messages({
 }: messagesProps) {
   const messages = useQuery(api.messages.getMessage, { roomId: roomId })
   const deleteMessage = useMutation(api.messages.deleteMessage)
+  const checkAndSendCommand = useMutation(api.messages.checkAndSendCommand)
   const [messageInput, setMessageInput] = useState<string> ('')
-  console.log(messages)
 
   const send = useMutation(api.messages.sendMessage)
 
@@ -25,11 +26,21 @@ export default function Messages({
   }
 
   async function sendMessage(message: string, timeSent: number) {
+    console.log(message)
+    const messageToSendObject = parseMessage(message)
+    console.log(messageToSendObject)
     await send({
       roomId: roomId,
-      message,
+      message: messageToSendObject.messageToSend,
       timeSent
     })
+    if (messageToSendObject.sendCommand) {
+      checkAndSendCommand({ 
+        message: messageToSendObject.messageToSend,
+        roomId: roomId,
+        timeSent: timeSent
+       })
+    }
   }
 
   async function onKeyDown(e: KeyboardEvent) {
@@ -52,7 +63,7 @@ export default function Messages({
         className="messagesList "
       >
         {messages?.map(({message, userName}, index) => (
-        <div key={index} className="messageList showOnHover textPadding">
+        <div key={index} className="messageList showOnHover textPadding preWrap">
           <div
             className="userName"
           >  
