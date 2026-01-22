@@ -13,6 +13,7 @@ import type * as messages from "../messages.js";
 import type * as migration from "../migration.js";
 import type * as myFunctions from "../myFunctions.js";
 import type * as rooms from "../rooms.js";
+import type * as seversideFunctions_checkMessage from "../seversideFunctions/checkMessage.js";
 import type * as seversideFunctions_diceRoll from "../seversideFunctions/diceRoll.js";
 
 import type {
@@ -27,6 +28,7 @@ declare const fullApi: ApiFromModules<{
   migration: typeof migration;
   myFunctions: typeof myFunctions;
   rooms: typeof rooms;
+  "seversideFunctions/checkMessage": typeof seversideFunctions_checkMessage;
   "seversideFunctions/diceRoll": typeof seversideFunctions_diceRoll;
 }>;
 

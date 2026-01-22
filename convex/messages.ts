@@ -1,6 +1,7 @@
 import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
 import rollDice from "./seversideFunctions/diceRoll"
+import checkMessage from "./seversideFunctions/checkMessage"
 
 export const getMessage = query({
   args: { 
@@ -59,8 +60,10 @@ export const sendMessage = mutation({
       .filter((q) => q.eq(q.field("roomId"), args.roomId))
       .first()
 
+    const checkedMessage = checkMessage(args.message)
+
     const newMessage ={
-      message: args.message,
+      message: checkedMessage,
       userName: String(identity.nickname),
       userId: userId,
       timeSent: args.timeSent
@@ -143,8 +146,8 @@ export const checkAndSendCommand = mutation({
     } else if (!preGroup.users.includes(userId)) {
       return
     }
-
-    const diceRollInfo = rollDice(args.message)
+    const checkedMessage = checkMessage(args.message)
+    const diceRollInfo = rollDice(checkedMessage)
 
     if (diceRollInfo == false || null) {
       return
