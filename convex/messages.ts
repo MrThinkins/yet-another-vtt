@@ -165,7 +165,10 @@ export const checkAndSendCommand = mutation({
             for (let j = i + 1; j <= message.length; j++) {
               if (Number.isFinite(Number(message[j - 1])) && message[j] == "d" && Number.isFinite(Number(message[j + 1]))) {
                 console.log('dice roller is broken now')
-                // placeTracker = 1
+                placeTracker = 3
+                loopCount++
+                numberOfDice.push('')
+                diceSize.push('')
               }
             }
             if (placeTracker == 4) {
@@ -199,11 +202,16 @@ export const checkAndSendCommand = mutation({
         }
       }
       if (placeTracker >= 4) {
+        console.log("numberOfDice: " + numberOfDice)
+        console.log("diceSize: " + diceSize)
         let diceRoll = 0
-        for (let i = 0; i < Number(numberOfDice[loopCount]); i++) {
-          diceRolls.push(Math.floor(Math.random() * Number(diceSize[loopCount])) + 1)
-          diceRoll +=  diceRolls[i]
+        for (let j = 0; j <= loopCount; j++) {
+          for (let i = 0; i < Number(numberOfDice[j]); i++) {
+            diceRolls.push(Math.floor(Math.random() * Number(diceSize[j])) + 1)
+            diceRoll +=  diceRolls[i]
+          }
         }
+        
         if (subOrAdd == 'subtract') {
           diceRoll -= Number(numToSubtract)
         } else if (subOrAdd == 'add') {
