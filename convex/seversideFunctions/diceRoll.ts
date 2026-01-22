@@ -74,6 +74,9 @@ export default function rollDice( message: string) {
         console.log("diceSize: " + diceSize)
         let diceRoll = 0
         for (let j = 0; j <= loopCount; j++) {
+          if (Number(numberOfDice[j]) > 1000) {
+            return false
+          }
           for (let i = 0; i < Number(numberOfDice[j]); i++) {
             diceRolls.push(Math.floor(Math.random() * Number(diceSize[j])) + 1)
             diceRoll +=  diceRolls[i]
