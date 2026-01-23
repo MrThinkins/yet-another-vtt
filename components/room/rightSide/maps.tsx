@@ -1,4 +1,4 @@
-import { useMutation } from "convex/react"
+import { useMutation, useQuery } from "convex/react"
 import { FormEvent, useRef, useState } from "react"
 import { api } from "@/convex/_generated/api"
 
@@ -9,6 +9,8 @@ interface mapsProps {
 export default function Maps({
   roomId
 }: mapsProps) {
+  const mapList = useQuery(api.maps.getImageList, { roomId: roomId })
+  
   const generateUploadUrl = useMutation(api.mapImages.generateUploadUrl)
   const addImageToList = useMutation(api.maps.addImageToList)
   
@@ -63,6 +65,14 @@ export default function Maps({
           Upload Map
         </button>
       </form>
+      <h2>
+        Maps
+      </h2>
+      {mapList?.map(({ mapName, storageId }, index) => (
+        <div>
+          Name: {mapName}
+        </div>
+      ))}
     </div>
   )
 }

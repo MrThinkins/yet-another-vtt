@@ -1,4 +1,4 @@
-import { mutation } from "./_generated/server"
+import { mutation, query } from "./_generated/server"
 import { v } from "convex/values"
 
 export const addImageToList = mutation({
@@ -20,5 +20,27 @@ export const addImageToList = mutation({
       mapName: "tempName",
       storageId: args.storageId
     })
+  }
+})
+
+export const getImageList = query({
+  args: {
+    roomId: v.number()
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+
+    if (!identity) {
+      throw new Error("Not Authenticated")
+    }
+    const userId = identity.subject
+
+    const list = await ctx.db
+      .query("maps")
+      .filter((q) => q.eq(q.field("userId"), userId))
+      .filter((q) => q.eq(q.field("roomId"), args.roomId))
+      .take(100)
+
+    return list
   }
 })
