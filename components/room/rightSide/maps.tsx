@@ -1,3 +1,7 @@
+import { useMutation } from "convex/react"
+import { FormEvent, useRef, useState } from "react"
+import { api } from "@/convex/_generated/api"
+
 interface mapsProps {
   roomId: number
 }
@@ -5,9 +9,50 @@ interface mapsProps {
 export default function Maps({
   roomId
 }: mapsProps) {
+  const generateUploadUrl = useMutation(api.mapImages.generateUploadUrl)
+  
+  const imageInput = useRef<HTMLInputElement>(null)
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
+
+  async function uploadImage(event: FormEvent) {
+    event.preventDefault()
+
+    const postUrl = await generateUploadUrl()
+
+    const result = await fetch(postUrl, {
+      method: "POST",
+      headers: { "Content-Type": selectedImage!.type },
+      body: selectedImage,
+    })
+    setSelectedImage(null)
+  }
   return (
     <div>
       Maps
+      <form 
+        onSubmit={uploadImage}
+      >
+        <label
+          htmlFor="mapUpload"
+        >
+          Map Upload
+        </label>
+        <input
+          type="file"
+          accept="image/*"
+          id="mapUpload"
+          ref={imageInput}
+          onChange={(e) => setSelectedImage(e.target.files![0])}
+          disabled={selectedImage != null}
+        >
+        </input>
+        <button
+          type="submit"
+          disabled={selectedImage == null}
+        >
+          Upload Map
+        </button>
+      </form>
     </div>
   )
 }
