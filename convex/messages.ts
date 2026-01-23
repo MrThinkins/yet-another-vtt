@@ -1,5 +1,7 @@
 import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
+import rollDice from "./seversideFunctions/diceRoll"
+import checkMessage from "./seversideFunctions/checkMessage"
 
 export const getMessage = query({
   args: { 
@@ -58,8 +60,10 @@ export const sendMessage = mutation({
       .filter((q) => q.eq(q.field("roomId"), args.roomId))
       .first()
 
+    const checkedMessage = checkMessage(args.message)
+
     const newMessage ={
-      message: args.message,
+      message: checkedMessage,
       userName: String(identity.nickname),
       userId: userId,
       timeSent: args.timeSent
@@ -117,7 +121,6 @@ export const deleteMessage = mutation({
   }
 })
 
-// This is janky, improve it later
 export const checkAndSendCommand = mutation({
   args: {
     message: v.string(),
@@ -132,126 +135,44 @@ export const checkAndSendCommand = mutation({
     const userName = identity.nickname
     const userId = identity.subject
 
-    let subOrAdd = ''
-    let numToSubtract = '0'
-    let numToAdd = ''
-    let loopCount = 0
-    let numberOfDice = ['']
-    let diceSize = ['']
-    let placeTracker: number = 1
-    let diceRolls: Array<number> = []
-    if (args.message.includes("/r")) {
-      let message = args.message
 
-      for (let i = 0; i < message.length; i++) {
-        if (placeTracker == 1) {
-          if (message[i] == '/') {
-            placeTracker++
-          }
-        } else if (placeTracker == 2) {
-          if (message[i] == 'r' && message[i - 1] == '/') {
-            placeTracker = 3
-          }
-        } else if (placeTracker == 3) {
-          if (message[i] == 'd') {
-            placeTracker = 4
-          } else if (Number.isFinite(Number(message[i]))) {
-            numberOfDice[loopCount] += message[i]
-          }
-        } else if (placeTracker == 4) {
-          if (Number.isFinite(Number(message[i]))) {
-            diceSize[loopCount] += message[i]
-          } else if (message[i] == '+' || message[i] == '-') {
-            for (let j = i + 1; j <= message.length; j++) {
-              if (Number.isFinite(Number(message[j - 1])) && message[j] == "d" && Number.isFinite(Number(message[j + 1]))) {
-                console.log('dice roller is broken now')
-                placeTracker = 3
-                loopCount++
-                numberOfDice.push('')
-                diceSize.push('')
-              }
-            }
-            if (placeTracker == 4) {
-              placeTracker = 5
-              if (message[i] == '-') {
-                placeTracker = 6
-                subOrAdd = 'subtract'
-              } else if (message[i] == '+') {
-                placeTracker = 6
-                subOrAdd = 'add'
-              }
-            }
-          }
-        } else if (placeTracker == 5) {
-          // if (message[i - 1] == '-') {
-          //   placeTracker = 6
-          //   subOrAdd = 'subtract'
-          // } else if (message[i - 1] == '+') {
-          //   placeTracker = 6
-          //   subOrAdd = 'add'
-          // }
-        } else if (placeTracker == 6) {
-          if (Number.isFinite(Number(message[i]))) {
-            if (subOrAdd == 'subtract') {
-              numToSubtract += message[i]
-              console.log(message[i])
-            } else {
-              numToAdd += message[i]
-            }
-          }
-        }
-      }
-      if (placeTracker >= 4) {
-        console.log("numberOfDice: " + numberOfDice)
-        console.log("diceSize: " + diceSize)
-        let diceRoll = 0
-        for (let j = 0; j <= loopCount; j++) {
-          for (let i = 0; i < Number(numberOfDice[j]); i++) {
-            diceRolls.push(Math.floor(Math.random() * Number(diceSize[j])) + 1)
-            diceRoll +=  diceRolls[i]
-          }
-        }
-        
-        if (subOrAdd == 'subtract') {
-          diceRoll -= Number(numToSubtract)
-        } else if (subOrAdd == 'add') {
-          diceRoll += Number(numToAdd)
-        }
+    const preGroup = await ctx.db
+      .query("rooms")
+      .filter((q) => (q.eq(q.field("roomId"), args.roomId)))
+      .first()
 
-        console.log("diceRoll " + diceRoll )
-
-        const preGroup = await ctx.db
-          .query("rooms")
-          .filter((q) => (q.eq(q.field("roomId"), args.roomId)))
-          .first()
-
-        if (!preGroup) {
-          return
-        } else if (!preGroup.users.includes(userId)) {
-          return
-        }
-
-        const messageToSend = `${userName} rolled ${diceRoll} \n ${diceRolls}`
-        const newMessage = {
-          message: messageToSend,
-          userName: "Bot",
-          userId: userId,
-          timeSent: args.timeSent
-        }
-
-        const group = await ctx.db
-          .query("messages")
-          .filter((q) => q.eq(q.field("roomId"), args.roomId))
-          .first()
-
-        if (!group) {
-          return
-        }
-
-        await ctx.db.patch(group._id, {
-          messages: [...group.messages, newMessage]
-        })
-      }
+    if (!preGroup) {
+      return
+    } else if (!preGroup.users.includes(userId)) {
+      return
     }
+    const checkedMessage = checkMessage(args.message)
+    const diceRollInfo = rollDice(checkedMessage)
+
+    if (diceRollInfo == false || null) {
+      return
+    }
+
+    const messageToSend = `${userName} rolled ${diceRollInfo.diceRoll} \n ${diceRollInfo.diceRolls}`
+    const newMessage = {
+      message: messageToSend,
+      userName: "Bot",
+      userId: userId,
+      timeSent: args.timeSent
+    }
+
+    const group = await ctx.db
+      .query("messages")
+      .filter((q) => q.eq(q.field("roomId"), args.roomId))
+      .first()
+
+    if (!group) {
+      return
+    }
+
+    await ctx.db.patch(group._id, {
+      messages: [...group.messages, newMessage]
+    })
+
   }
 })
