@@ -10,6 +10,7 @@ export default function Maps({
   roomId
 }: mapsProps) {
   const generateUploadUrl = useMutation(api.mapImages.generateUploadUrl)
+  const addImageToList = useMutation(api.maps.addImageToList)
   
   const imageInput = useRef<HTMLInputElement>(null)
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
@@ -24,7 +25,16 @@ export default function Maps({
       headers: { "Content-Type": selectedImage!.type },
       body: selectedImage,
     })
+
+    const { storageId } = await result.json()
+
+    await addImageToList({
+      roomId: roomId,
+      storageId: storageId
+    })
+
     setSelectedImage(null)
+    imageInput.current!.value = ""
   }
   return (
     <div>
