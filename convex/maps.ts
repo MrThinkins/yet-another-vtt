@@ -44,3 +44,13 @@ export const getImageList = query({
     return list
   }
 })
+
+export const getImage = query({
+  args: {
+    storageId: v.string()
+  }, 
+  handler: async (ctx, args) => {
+    const imageUrl = await ctx.storage.getUrl(args.storageId)
+    return imageUrl
+  }
+})

@@ -38,6 +38,9 @@ export default function Maps({
     setSelectedImage(null)
     imageInput.current!.value = ""
   }
+
+
+
   return (
     <div>
       Maps
