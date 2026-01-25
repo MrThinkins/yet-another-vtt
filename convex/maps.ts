@@ -1,5 +1,6 @@
 import { mutation, query } from "./_generated/server"
 import { v } from "convex/values"
+import { Id } from "./_generated/dataModel"
 
 export const addImageToList = mutation({
   args: {
@@ -47,7 +48,7 @@ export const getImageList = query({
 
 export const getImage = query({
   args: {
-    storageId: v.string()
+    storageId:  v.id("_storage"),
   }, 
   handler: async (ctx, args) => {
     const imageUrl = await ctx.storage.getUrl(args.storageId)

@@ -3,6 +3,7 @@ import DrawFrame from "./drawFrame"
 import './map.css'
 import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
+import { Id } from "@/convex/_generated/dataModel"
 
 interface vttMapProps {
   roomId: number,
@@ -27,8 +28,18 @@ export default function VttMap({
   //       Loading
   //     </div>
   //   )
-  // }
-  const mapImage = useQuery(api.maps.getImage, { storageId: "kg2ajej76cm53xje0ypktqznc17zsaha" })
+  // }'
+  const storage = {
+    _creationTime: 1769374760668.4604,
+    _id: "kg22bd2ap10p5r9a4xh6hxkzqx7zx4wk",
+    contentType: "image/jpeg",
+    sha256: "w++QdVr3RfzC6ZwNbvEJDP5GcP2gLeOIqsjhaYaCPQY=",
+    size: 115857,
+  }
+  const storageId: string = storage._id
+  const mapImage = useQuery(api.maps.getImage, { 
+    storageId: storageId as Id<"_storage">
+   })
 
   // move and zoom map
   const [zoom, setZoom] = useState(1)

@@ -36,6 +36,6 @@ export default defineSchema({
     roomId: v.number(),
     userId: v.string(),
     mapName: v.string(),
-    storageId: v.string()
+    storageId: v.id("_storage")
   })
 })
