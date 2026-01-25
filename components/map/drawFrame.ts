@@ -1,13 +1,16 @@
 const image = new Image()
-image.src = '/manor-test-map.jpg'
 
 export default function DrawFrame(
   canvas: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
   mapDimensions: { width: number, height: number },
   zoom: number,
-  offset: { x: number,  y: number }
+  offset: { x: number,  y: number },
+  mapImage: string
 ) {
+  
+  // image.src = 'https://adorable-chameleon-25.convex.cloud/api/storage/dfe8df27-8fff-4de8-88ef-b1ca147febf4'
+  image.src = mapImage
   ctx.clearRect(0, 0, canvas.width, canvas.height)
 
   // const cellSize = 100

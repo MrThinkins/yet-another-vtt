@@ -1,6 +1,7 @@
 import { useState } from "react"
 import Messages from "./rightSide/messages"
 import Settings from "./rightSide/settings"
+import Maps from "./rightSide/maps"
 
 
 interface rightSideBarProps {
@@ -15,8 +16,17 @@ export default function RightSideBar({
   return (
     <div className="rightSideBarGrid">
       <div className="rightSideBarNavGrid">
-        <div onClick={() => setPartToShow('messages')} className="cursorPointer material-symbols-outlined">
+        <div 
+          onClick={() => setPartToShow('messages')} 
+          className="cursorPointer material-symbols-outlined"
+        >
           chat
+        </div>
+        <div
+          onClick={() => setPartToShow('maps')}
+          className="cursorPointer material-symbols-outlined"
+        >
+          map
         </div>
         <div onClick={() => setPartToShow('settings')} className="cursorPointer material-symbols-outlined">
           settings
@@ -31,6 +41,11 @@ export default function RightSideBar({
             roomId={roomId}
           >
           </Messages>
+        ) : partToShow == 'maps' ? (
+          <Maps
+            roomId={roomId}
+          >
+          </Maps>
         ) : (
           <Settings
             roomId={roomId}

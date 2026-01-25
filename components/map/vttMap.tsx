@@ -1,6 +1,8 @@
 import { useRef, useEffect, useState } from "react"
 import DrawFrame from "./drawFrame"
 import './map.css'
+import { useQuery } from "convex/react"
+import { api } from "@/convex/_generated/api"
 
 interface vttMapProps {
   roomId: number,
@@ -17,6 +19,16 @@ export default function VttMap({
   const divRef = useRef<HTMLDivElement>(null)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const [mapDimensions] = useState({ width: 10, height: 10 })
+
+  // const imageList = useQuery(api.maps.getImageList, { roomId })
+  // if (!imageList) {
+  //   return (
+  //     <div>
+  //       Loading
+  //     </div>
+  //   )
+  // }
+  const mapImage = useQuery(api.maps.getImage, { storageId: "kg2ajej76cm53xje0ypktqznc17zsaha" })
 
   // move and zoom map
   const [zoom, setZoom] = useState(1)
@@ -120,8 +132,12 @@ export default function VttMap({
     if (!ctx) return
 
     console.log(zoom)
-    DrawFrame(canvas, ctx, mapDimensions, zoom, offset)
-  }, [zoom, dimensions, offset])
+    if (!mapImage) {
+      return
+    }
+    console.log(mapImage)
+    DrawFrame(canvas, ctx, mapDimensions, zoom, offset, mapImage)
+  }, [zoom, dimensions, offset, mapImage])
 
   return (
       <div
