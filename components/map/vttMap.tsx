@@ -7,6 +7,7 @@ import { Id } from "@/convex/_generated/dataModel"
 
 interface vttMapProps {
   roomId: number,
+  imageStorageId: Id<"_storage">
 }
 
 const minZoom = 0.1
@@ -15,6 +16,7 @@ const maxZoom = 10
 
 export default function VttMap({
   roomId, // eslint-disable-line
+  imageStorageId
 }: vttMapProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const divRef = useRef<HTMLDivElement>(null)
@@ -29,16 +31,10 @@ export default function VttMap({
   //     </div>
   //   )
   // }'
-  const storage = {
-    _creationTime: 1769374760668.4604,
-    _id: "kg22bd2ap10p5r9a4xh6hxkzqx7zx4wk",
-    contentType: "image/jpeg",
-    sha256: "w++QdVr3RfzC6ZwNbvEJDP5GcP2gLeOIqsjhaYaCPQY=",
-    size: 115857,
-  }
-  const storageId: string = storage._id
+  
+  const storageId: string = imageStorageId
   const mapImage = useQuery(api.maps.getImage, { 
-    storageId: storageId as Id<"_storage">
+    storageId: imageStorageId as Id<"_storage">
    })
 
   // move and zoom map

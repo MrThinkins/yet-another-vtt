@@ -6,6 +6,7 @@ import RightSideBar from '@/components/room/rightSideBar'
 import { useMutation, useQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import VttMap from '@/components/map/vttMap'
+import { Id } from '@/convex/_generated/dataModel'
 
 interface RoomProps {
   params: Promise<{
@@ -18,6 +19,14 @@ export default function Room( { params }: RoomProps ) {
   const roomId = Number(roomIdString) 
   const aloudInRoom = useQuery(api.rooms.getRoom, { roomId: roomId })
   const submitRoomPassword = useMutation(api.rooms.submitRoomPassword)
+
+  const imageStorageInfo = {
+      _creationTime: 1769374760668.4604,
+      _id: "kg22bd2ap10p5r9a4xh6hxkzqx7zx4wk",
+      contentType: "image/jpeg",
+      sha256: "w++QdVr3RfzC6ZwNbvEJDP5GcP2gLeOIqsjhaYaCPQY=",
+      size: 115857,
+    }
 
   const [roomPassword, setRoomPassword] = useState<number>()
   
@@ -41,6 +50,7 @@ export default function Room( { params }: RoomProps ) {
       <div>
         <VttMap
           roomId={roomId}
+          imageStorageId={imageStorageInfo._id as Id<"_storage">}
         >
         </VttMap>
         <div onClick={toggleRightSide} className="rightSideToggler material-symbols-outlined">
