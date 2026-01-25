@@ -34,7 +34,7 @@ export default function VttMap({
   
   const storageId: string = imageStorageId
   const mapImage = useQuery(api.maps.getImage, { 
-    storageId: imageStorageId as Id<"_storage">
+    storageId: imageStorageId
    })
 
   // move and zoom map

@@ -5,11 +5,13 @@ import Maps from "./rightSide/maps"
 
 
 interface rightSideBarProps {
-  roomId: number
+  roomId: number,
+  onSelectMap: (mapId: string) => void
 }
 
 export default function RightSideBar({
-  roomId
+  roomId,
+  onSelectMap
 }: rightSideBarProps) {
   
   const [partToShow, setPartToShow] = useState<string> ('messages')
@@ -44,6 +46,7 @@ export default function RightSideBar({
         ) : partToShow == 'maps' ? (
           <Maps
             roomId={roomId}
+            onSelectMap={onSelectMap}
           >
           </Maps>
         ) : (

@@ -3,11 +3,13 @@ import { FormEvent, useRef, useState } from "react"
 import { api } from "@/convex/_generated/api"
 
 interface mapsProps {
-  roomId: number
+  roomId: number,
+  onSelectMap: (mapId: string) => void
 }
 
 export default function Maps({
-  roomId
+  roomId,
+  onSelectMap
 }: mapsProps) {
   const mapList = useQuery(api.maps.getImageList, { roomId: roomId })
   
@@ -71,8 +73,10 @@ export default function Maps({
       <h2>
         Maps
       </h2>
-      {mapList?.map(({ mapName, storageId }, index) => (
-        <div>
+      {mapList?.map(({ mapName, storageId, _id }, index) => (
+        <div 
+          onClick={() => onSelectMap(_id)
+        }>
           Name: {mapName}
         </div>
       ))}
