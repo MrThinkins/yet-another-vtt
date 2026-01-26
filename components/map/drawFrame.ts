@@ -6,11 +6,11 @@ export default function DrawFrame(
   mapDimensions: { width: number, height: number },
   zoom: number,
   offset: { x: number,  y: number },
-  mapImage: string
+  image: HTMLImageElement
 ) {
   
   // image.src = 'https://adorable-chameleon-25.convex.cloud/api/storage/dfe8df27-8fff-4de8-88ef-b1ca147febf4'
-  image.src = mapImage
+  // image.src = mapImage
   ctx.clearRect(0, 0, canvas.width, canvas.height)
 
   // const cellSize = 100
@@ -19,6 +19,10 @@ export default function DrawFrame(
   ctx.translate(offset.x, offset.y)
   ctx.scale(zoom, zoom)
 
+  if (!image.complete) {
+    ctx.restore()
+    return
+  }
   ctx.drawImage(
     image,
     0, 0

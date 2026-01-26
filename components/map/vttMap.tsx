@@ -30,24 +30,36 @@ export default function VttMap({
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const [mapDimensions] = useState({ width: 10, height: 10 })
 
+  const [image, setImage] = useState<HTMLImageElement | null>(null)
+
   const mapInfo = useQuery(api.maps.getMap, { _id: mapId })
   const [mapStorageId, setMapStorageId] = useState<Id<"_storage">>(
     defaultMapStorageId._id as Id<"_storage">
   )
 
+  const mapImage = useQuery(api.maps.getImage, { 
+    storageId: mapStorageId
+  })
 
-  // const imageList = useQuery(api.maps.getImageList, { roomId })
-  // if (!imageList) {
-  //   return (
-  //     <div>
-  //       Loading
-  //     </div>
-  //   )
-  // }'
-  
-  
+  useEffect(() => {
+    if (!mapImage) {
+      return
+    }
 
-  // const storageId: string = imageStorageId
+
+    const img = new Image()
+    img.onload = () => {
+      setImage(img)
+    }
+
+    img.src = mapImage
+
+    return () => {
+      img.onload = null
+      img.onerror = null
+    }
+  }, [mapImage])
+
 
   useEffect(() => {
     if (!mapInfo) {
@@ -62,9 +74,7 @@ export default function VttMap({
     
   }, [mapInfo])
   
-const mapImage = useQuery(api.maps.getImage, { 
-      storageId: mapStorageId
-   })
+
   // move and zoom map
   const [zoom, setZoom] = useState(1)
   const [offset, setOffset] = useState({ x: 0, y: 0 })
@@ -170,9 +180,13 @@ const mapImage = useQuery(api.maps.getImage, {
     if (!mapImage) {
       return
     }
+
+    if (!image) {
+      return
+    }
     console.log(mapImage)
-    DrawFrame(canvas, ctx, mapDimensions, zoom, offset, mapImage)
-  }, [zoom, dimensions, offset, mapImage])
+    DrawFrame(canvas, ctx, mapDimensions, zoom, offset, image)
+  }, [zoom, dimensions, offset, mapImage, image])
 
   return (
       <div
