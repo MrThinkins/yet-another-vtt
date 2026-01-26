@@ -1,12 +1,13 @@
 import { mutation, query } from "./_generated/server"
 import { v } from "convex/values"
-import { Id } from "./_generated/dataModel"
+// import { Id } from "./_generated/dataModel"
 
 export const addImageToList = mutation({
   args: {
     storageId: v.id("_storage"),
-    roomId: v.number()
-  }, 
+    roomId: v.number(),
+    mapName: v.string()
+  },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity()
 
@@ -18,7 +19,7 @@ export const addImageToList = mutation({
     await ctx.db.insert("maps", {
       roomId: args.roomId,
       userId: userId,
-      mapName: "tempName",
+      mapName: args.mapName,
       storageId: args.storageId
     })
   }

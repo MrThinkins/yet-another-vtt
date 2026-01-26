@@ -18,6 +18,7 @@ export default function Maps({
   
   const imageInput = useRef<HTMLInputElement>(null)
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const [mapName, setMapName] = useState("Default Name")
 
   async function uploadImage(event: FormEvent) {
     event.preventDefault()
@@ -34,7 +35,8 @@ export default function Maps({
 
     await addImageToList({
       roomId: roomId,
-      storageId: storageId
+      storageId: storageId,
+      mapName: mapName
     })
 
     setSelectedImage(null)
@@ -54,6 +56,20 @@ export default function Maps({
         >
           Map Upload
         </label>
+        <br></br>
+        <label
+          htmlFor="mapName"
+        >
+          Map Name:
+        </label>
+        <input
+          type="text"
+          id="mapName"
+          value={mapName}
+          onChange={(e) => setMapName(e.target.value)}
+        >
+        </input>
+        <br></br>
         <input
           type="file"
           accept="image/*"
