@@ -7,21 +7,34 @@ import { Id } from "@/convex/_generated/dataModel"
 
 interface vttMapProps {
   roomId: number,
-  imageStorageId: Id<"_storage">
+  mapId: string
 }
 
 const minZoom = 0.1
 const maxZoom = 10
 
+const defaultMapStorageId = {
+  _creationTime: 1769374760668.4604,
+  _id: "kg22bd2ap10p5r9a4xh6hxkzqx7zx4wk",
+  contentType: "image/jpeg",
+  sha256: "w++QdVr3RfzC6ZwNbvEJDP5GcP2gLeOIqsjhaYaCPQY=",
+  size: 115857,
+}
 
 export default function VttMap({
   roomId, // eslint-disable-line
-  imageStorageId
+  mapId
 }: vttMapProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const divRef = useRef<HTMLDivElement>(null)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const [mapDimensions] = useState({ width: 10, height: 10 })
+
+  const mapInfo = useQuery(api.maps.getMap, { _id: mapId })
+  const [mapStorageId, setMapStorageId] = useState<Id<"_storage">>(
+    defaultMapStorageId._id as Id<"_storage">
+  )
+
 
   // const imageList = useQuery(api.maps.getImageList, { roomId })
   // if (!imageList) {
@@ -32,11 +45,26 @@ export default function VttMap({
   //   )
   // }'
   
-  const storageId: string = imageStorageId
-  const mapImage = useQuery(api.maps.getImage, { 
-    storageId: imageStorageId
-   })
+  
 
+  // const storageId: string = imageStorageId
+
+  useEffect(() => {
+    if (!mapInfo) {
+      return
+    }
+    if (!mapInfo.storageId) {
+      return
+    }
+    setMapStorageId(
+      mapInfo.storageId as Id<"_storage">
+    )
+    
+  }, [mapInfo])
+  
+const mapImage = useQuery(api.maps.getImage, { 
+      storageId: mapStorageId
+   })
   // move and zoom map
   const [zoom, setZoom] = useState(1)
   const [offset, setOffset] = useState({ x: 0, y: 0 })
