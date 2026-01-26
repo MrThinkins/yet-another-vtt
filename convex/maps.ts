@@ -55,3 +55,17 @@ export const getImage = query({
     return imageUrl
   }
 })
+
+export const getMap = query({
+  args: {
+    _id: v.string()
+  },
+  handler: async (ctx, args) => {
+    const map = ctx.db
+      .query("maps")
+      .filter((q) => q.eq(q.field("_id"), args._id))
+      .first()
+
+    return map
+  }
+})

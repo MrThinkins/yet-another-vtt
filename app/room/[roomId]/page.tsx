@@ -32,9 +32,18 @@ export default function Room( { params }: RoomProps ) {
 
   const [roomPassword, setRoomPassword] = useState<number>()
 
-  function onSelectMap (mapId : string) {
+  async function onSelectMap (mapId : string) {
     console.log('mapId ' + mapId)
-    // setImageStorageId(id)
+
+    const map = await useQuery(api.maps.getMap, { _id: mapId })
+    if (!map) {
+      return
+    }
+    const mapStorageId = map.storageId
+
+    console.log("mapStorageId " + mapStorageId)
+
+    setImageStorageId(mapStorageId as Id<"_storage">)
   }
   
   const submitRoomPasswordFunction = async (e: FormEvent) => {
