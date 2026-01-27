@@ -4,12 +4,10 @@ import { api } from "@/convex/_generated/api"
 
 interface mapsProps {
   roomId: number,
-  onSelectMap: (mapId: string) => void
 }
 
 export default function Maps({
-  roomId,
-  onSelectMap
+  roomId
 }: mapsProps) {
   const mapList = useQuery(api.maps.getImageList, { roomId: roomId })
   

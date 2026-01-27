@@ -6,8 +6,7 @@ import { api } from "@/convex/_generated/api"
 import { Id } from "@/convex/_generated/dataModel"
 
 interface vttMapProps {
-  roomId: number,
-  mapId: string
+  roomId: number
 }
 
 const minZoom = 0.1
@@ -23,7 +22,6 @@ const defaultMapStorageId = {
 
 export default function VttMap({
   roomId, // eslint-disable-line
-  // mapId
 }: vttMapProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const divRef = useRef<HTMLDivElement>(null)

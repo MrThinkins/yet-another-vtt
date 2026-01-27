@@ -28,25 +28,7 @@ export default function Room( { params }: RoomProps ) {
   const aloudInRoom = useQuery(api.rooms.getRoom, { roomId: roomId })
   const submitRoomPassword = useMutation(api.rooms.submitRoomPassword)
 
-  const [mapId, setMapId] = useState("")
-
-  const [imageStorageId, setImageStorageId] = useState<Id<"_storage">>(tempImageInfo._id as Id<"_storage">)
-
   const [roomPassword, setRoomPassword] = useState<number>()
-
-  async function onSelectMap (mapId : string) {
-    console.log('mapId ' + mapId)
-
-    // const map = await useQuery(api.maps.getMap, { _id: mapId })
-    // if (!map) {
-    //   return
-    // }
-    // const mapStorageId = map.storageId
-
-    // console.log("mapStorageId " + mapStorageId)
-    setMapId(mapId)
-    // setImageStorageId(mapStorageId as Id<"_storage">)
-  }
   
   const submitRoomPasswordFunction = async (e: FormEvent) => {
     e.preventDefault()
@@ -68,7 +50,6 @@ export default function Room( { params }: RoomProps ) {
       <div>
         <VttMap
           roomId={roomId}
-          mapId={mapId}
         >
         </VttMap>
         <div onClick={toggleRightSide} className="rightSideToggler material-symbols-outlined">
@@ -78,7 +59,6 @@ export default function Room( { params }: RoomProps ) {
       <div className="rightSideBar">
         <RightSideBar
           roomId={roomId}
-          onSelectMap={onSelectMap}
         >
         </RightSideBar>
       </div>
