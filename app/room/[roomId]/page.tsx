@@ -6,20 +6,11 @@ import RightSideBar from '@/components/room/rightSideBar'
 import { useMutation, useQuery } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import VttMap from '@/components/map/vttMap'
-import { Id } from '@/convex/_generated/dataModel'
 
 interface RoomProps {
   params: Promise<{
     roomId: string
   }>
-}
-
-const tempImageInfo = {
-  _creationTime: 1769374760668.4604,
-  _id: "kg22bd2ap10p5r9a4xh6hxkzqx7zx4wk",
-  contentType: "image/jpeg",
-  sha256: "w++QdVr3RfzC6ZwNbvEJDP5GcP2gLeOIqsjhaYaCPQY=",
-  size: 115857,
 }
 
 export default function Room( { params }: RoomProps ) {

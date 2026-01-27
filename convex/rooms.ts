@@ -68,8 +68,6 @@ export const createRoom = mutation({
 
 
 // THIS WILL NOT SCALE PAST A FEW HUNDRED ROOMS, FIX IN FUTURE
-
-
 export const getUserRoomList = query({
   args: {},
   handler: async (ctx) => {

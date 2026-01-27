@@ -42,8 +42,6 @@ export default function Maps({
     imageInput.current!.value = ""
   }
 
-
-
   return (
     <div>
       Maps

@@ -63,12 +63,6 @@ export default function VttMap({
 
   useEffect(() => {
     console.log('changing map storage Id')
-    // if (!mapInfo) {
-    //   return
-    // }
-    // if (!mapInfo.storageId) {
-    //   return
-    // }
     if (!roomStorageId) {
       return
     }
