@@ -86,8 +86,9 @@ export default function Maps({
       <h2>
         Maps
       </h2>
-      {mapList?.map(({ mapName, storageId, _id }, index) => (
+      {mapList?.map(({ mapName, storageId }, index) => (
         <div 
+          key={index}
           onClick={() => setMapId({
             roomId: roomId,
             storageId: storageId
