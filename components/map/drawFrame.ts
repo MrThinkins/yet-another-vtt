@@ -1,24 +1,20 @@
-const image = new Image()
-
 export default function DrawFrame(
   canvas: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
   mapDimensions: { width: number, height: number },
   zoom: number,
   offset: { x: number,  y: number },
-  mapImage: string
+  image: HTMLImageElement
 ) {
-  
-  // image.src = 'https://adorable-chameleon-25.convex.cloud/api/storage/dfe8df27-8fff-4de8-88ef-b1ca147febf4'
-  image.src = mapImage
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-  // const cellSize = 100
-  // const row = Math.floor
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
 
   ctx.translate(offset.x, offset.y)
   ctx.scale(zoom, zoom)
 
+  if (!image.complete) {
+    ctx.restore()
+    return
+  }
   ctx.drawImage(
     image,
     0, 0

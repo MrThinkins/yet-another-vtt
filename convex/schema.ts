@@ -30,12 +30,13 @@ export default defineSchema({
     owner: v.string(),
     name: v.string(),
     usePassword: v.boolean(),
-    password: v.optional(v.number())
+    password: v.optional(v.number()),
+    storageId: v.optional(v.id("_storage"))
   }),
   maps: defineTable({
     roomId: v.number(),
     userId: v.string(),
     mapName: v.string(),
-    storageId: v.string()
+    storageId: v.id("_storage")
   })
 })

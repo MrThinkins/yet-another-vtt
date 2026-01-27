@@ -68,8 +68,6 @@ export const createRoom = mutation({
 
 
 // THIS WILL NOT SCALE PAST A FEW HUNDRED ROOMS, FIX IN FUTURE
-
-
 export const getUserRoomList = query({
   args: {},
   handler: async (ctx) => {
@@ -238,4 +236,50 @@ export const getIsOwner = query({
       return false
     }
   },
+})
+
+export const setStorageId = mutation({
+  args: {
+    roomId: v.number(),
+    storageId: v.id("_storage")
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+    
+    if (!identity) {
+      throw new Error("Not Authenticated")
+    }
+    const userId = identity.subject
+
+    const room = await ctx.db
+      .query("rooms")
+      .filter((q) => q.eq(q.field("roomId"), args.roomId))
+      .first()
+
+    if (!(room?.owner == userId) || !room) {
+      return
+    }
+    
+    await ctx.db.patch(room._id, {
+      storageId: args.storageId
+    })
+  }
+})
+
+export const getStorageId = query({
+  args: {
+    roomId: v.number()
+  },
+  handler: async (ctx, args) => {
+    const room = await ctx.db
+      .query("rooms")
+      .filter((q) => q.eq(q.field("roomId"), args.roomId))
+      .first()
+
+    if (!room) {
+      return
+    }
+
+    return room.storageId
+  }
 })

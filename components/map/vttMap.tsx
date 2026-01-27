@@ -3,14 +3,22 @@ import DrawFrame from "./drawFrame"
 import './map.css'
 import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
+import { Id } from "@/convex/_generated/dataModel"
 
 interface vttMapProps {
-  roomId: number,
+  roomId: number
 }
 
 const minZoom = 0.1
 const maxZoom = 10
 
+const defaultMapStorageId = {
+  _creationTime: 1769374760668.4604,
+  _id: "kg22bd2ap10p5r9a4xh6hxkzqx7zx4wk",
+  contentType: "image/jpeg",
+  sha256: "w++QdVr3RfzC6ZwNbvEJDP5GcP2gLeOIqsjhaYaCPQY=",
+  size: 115857,
+}
 
 export default function VttMap({
   roomId, // eslint-disable-line
@@ -20,15 +28,54 @@ export default function VttMap({
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const [mapDimensions] = useState({ width: 10, height: 10 })
 
-  // const imageList = useQuery(api.maps.getImageList, { roomId })
-  // if (!imageList) {
-  //   return (
-  //     <div>
-  //       Loading
-  //     </div>
-  //   )
-  // }
-  const mapImage = useQuery(api.maps.getImage, { storageId: "kg2ajej76cm53xje0ypktqznc17zsaha" })
+  const roomStorageId = useQuery(api.rooms.getStorageId, { roomId: roomId })
+  console.log("roomStorageId " + roomStorageId)
+
+  const [image, setImage] = useState<HTMLImageElement | null>(null)
+
+  const [mapStorageId, setMapStorageId] = useState<Id<"_storage">>(
+    defaultMapStorageId._id as Id<"_storage">
+  )
+
+  const mapImage = useQuery(api.maps.getImage, { 
+    storageId: mapStorageId
+  })
+
+  useEffect(() => {
+    if (!mapImage) {
+      return
+    }
+
+
+    const img = new Image()
+    img.onload = () => {
+      setImage(img)
+    }
+
+    img.src = mapImage
+
+    return () => {
+      img.onload = null
+      img.onerror = null
+    }
+  }, [mapImage])
+
+
+  useEffect(() => {
+    console.log('changing map storage Id')
+    if (!roomStorageId) {
+      return
+    }
+
+    setMapStorageId(
+      roomStorageId
+    )
+
+    console.log("mapStorageId " + mapStorageId)
+
+    
+  }, [roomStorageId])
+  
 
   // move and zoom map
   const [zoom, setZoom] = useState(1)
@@ -135,9 +182,13 @@ export default function VttMap({
     if (!mapImage) {
       return
     }
+
+    if (!image) {
+      return
+    }
     console.log(mapImage)
-    DrawFrame(canvas, ctx, mapDimensions, zoom, offset, mapImage)
-  }, [zoom, dimensions, offset, mapImage])
+    DrawFrame(canvas, ctx, mapDimensions, zoom, offset, image)
+  }, [zoom, dimensions, offset, mapImage, image])
 
   return (
       <div

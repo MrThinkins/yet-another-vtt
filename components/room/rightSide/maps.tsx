@@ -3,7 +3,7 @@ import { FormEvent, useRef, useState } from "react"
 import { api } from "@/convex/_generated/api"
 
 interface mapsProps {
-  roomId: number
+  roomId: number,
 }
 
 export default function Maps({
@@ -13,9 +13,11 @@ export default function Maps({
   
   const generateUploadUrl = useMutation(api.mapImages.generateUploadUrl)
   const addImageToList = useMutation(api.maps.addImageToList)
+  const setMapId = useMutation(api.rooms.setStorageId)
   
   const imageInput = useRef<HTMLInputElement>(null)
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const [mapName, setMapName] = useState("Default Name")
 
   async function uploadImage(event: FormEvent) {
     event.preventDefault()
@@ -32,14 +34,13 @@ export default function Maps({
 
     await addImageToList({
       roomId: roomId,
-      storageId: storageId
+      storageId: storageId,
+      mapName: mapName
     })
 
     setSelectedImage(null)
     imageInput.current!.value = ""
   }
-
-
 
   return (
     <div>
@@ -52,6 +53,20 @@ export default function Maps({
         >
           Map Upload
         </label>
+        <br></br>
+        <label
+          htmlFor="mapName"
+        >
+          Map Name:
+        </label>
+        <input
+          type="text"
+          id="mapName"
+          value={mapName}
+          onChange={(e) => setMapName(e.target.value)}
+        >
+        </input>
+        <br></br>
         <input
           type="file"
           accept="image/*"
@@ -72,7 +87,13 @@ export default function Maps({
         Maps
       </h2>
       {mapList?.map(({ mapName, storageId }, index) => (
-        <div>
+        <div 
+          key={index}
+          onClick={() => setMapId({
+            roomId: roomId,
+            storageId: storageId
+          })
+        }>
           Name: {mapName}
         </div>
       ))}
