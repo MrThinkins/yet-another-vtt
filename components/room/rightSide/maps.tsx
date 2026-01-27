@@ -15,6 +15,7 @@ export default function Maps({
   
   const generateUploadUrl = useMutation(api.mapImages.generateUploadUrl)
   const addImageToList = useMutation(api.maps.addImageToList)
+  const setMapId = useMutation(api.rooms.setStorageId)
   
   const imageInput = useRef<HTMLInputElement>(null)
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
@@ -91,7 +92,10 @@ export default function Maps({
       </h2>
       {mapList?.map(({ mapName, storageId, _id }, index) => (
         <div 
-          onClick={() => onSelectMap(_id)
+          onClick={() => setMapId({
+            roomId: roomId,
+            storageId: storageId
+          })
         }>
           Name: {mapName}
         </div>

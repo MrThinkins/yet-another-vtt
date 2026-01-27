@@ -23,16 +23,18 @@ const defaultMapStorageId = {
 
 export default function VttMap({
   roomId, // eslint-disable-line
-  mapId
+  // mapId
 }: vttMapProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const divRef = useRef<HTMLDivElement>(null)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const [mapDimensions] = useState({ width: 10, height: 10 })
 
+  const roomStorageId = useQuery(api.rooms.getStorageId, { roomId: roomId })
+  console.log("roomStorageId " + roomStorageId)
+
   const [image, setImage] = useState<HTMLImageElement | null>(null)
 
-  const mapInfo = useQuery(api.maps.getMap, { _id: mapId })
   const [mapStorageId, setMapStorageId] = useState<Id<"_storage">>(
     defaultMapStorageId._id as Id<"_storage">
   )
@@ -62,17 +64,25 @@ export default function VttMap({
 
 
   useEffect(() => {
-    if (!mapInfo) {
+    console.log('changing map storage Id')
+    // if (!mapInfo) {
+    //   return
+    // }
+    // if (!mapInfo.storageId) {
+    //   return
+    // }
+    if (!roomStorageId) {
       return
     }
-    if (!mapInfo.storageId) {
-      return
-    }
+
     setMapStorageId(
-      mapInfo.storageId as Id<"_storage">
+      roomStorageId
     )
+
+    console.log("mapStorageId " + mapStorageId)
+
     
-  }, [mapInfo])
+  }, [roomStorageId])
   
 
   // move and zoom map
