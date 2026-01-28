@@ -2,6 +2,7 @@ import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
 import rollDice from "./seversideFunctions/diceRoll"
 import checkMessage from "./seversideFunctions/checkMessage"
+import trimMessages from "./seversideFunctions/trimMessages"
 
 export const getMessage = query({
   args: { 
@@ -77,8 +78,10 @@ export const sendMessage = mutation({
       return
     }
 
+    const messages = trimMessages(group.messages)
+
     await ctx.db.patch(group._id, {
-      messages: [...group.messages, newMessage]
+      messages: [...messages, newMessage]
     })
   }
 })
@@ -170,8 +173,10 @@ export const checkAndSendCommand = mutation({
       return
     }
 
+    const messages = trimMessages(group.messages)
+
     await ctx.db.patch(group._id, {
-      messages: [...group.messages, newMessage]
+      messages: [...messages, newMessage]
     })
 
   }
