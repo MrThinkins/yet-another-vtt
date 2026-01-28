@@ -19,17 +19,46 @@ export default function Home() {
           <Content />
         </Authenticated>
         <Unauthenticated>
-          <SignInForm />
+          <UnauthenticatedHomePage />
         </Unauthenticated>
       </main>
     </>
   );
 }
 
-function SignInForm() {
+function UnauthenticatedHomePage() {
   return (
     <div className="flex flex-col gap-8 w-96 mx-auto">
-      <p>Log in to see the numbers</p>
+      <p>
+        ...Temp place holder text, to be replaced in the future
+      </p>
+      <h1>
+        Open Source VTT
+      </h1>
+      <p>
+        An Open Source VTT that is hosted here for you to use, or you can host it yourself and use it for personal use, make changes, and use it for non commercial stuff however you want, completely for free.
+      </p>
+
+      <h2>
+        Easy to Host
+      </h2>
+      <p>
+        A relatively simple project to self host, you can easily host it on your own machine, or on a cloud provider with just a little bit of work.
+      </p>
+
+      <h2>
+        Real time built in the core.
+      </h2>
+      <p>
+        Pretty much every part of the vtt is built on top of a real time database, so that every part of the VTT pretty much works in sync with no extra work.
+      </p>
+
+      <h2> 
+        Sign in or up
+      </h2>
+      <p>
+        Sign in or up to try it out right now.
+      </p>
       <SignInButton mode="modal">
         <button className="bg-foreground text-background px-4 py-2 rounded-md">
           Sign in
