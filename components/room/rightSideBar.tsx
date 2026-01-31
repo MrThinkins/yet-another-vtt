@@ -2,6 +2,7 @@ import { useState } from "react"
 import Messages from "./rightSide/messages"
 import Settings from "./rightSide/settings"
 import Maps from "./rightSide/maps"
+import Tokens from "./rightSide/tokens"
 
 
 interface rightSideBarProps {
@@ -28,10 +29,13 @@ export default function RightSideBar({
         >
           map
         </div>
+        <div onClick={() => setPartToShow('tokens')} className="cursorPointer material-symbols-outlined">
+          token
+        </div>
         <div onClick={() => setPartToShow('settings')} className="cursorPointer material-symbols-outlined">
           settings
         </div>
-
+        
       </div>
       <div
         className="rightSideBarContent"
@@ -46,6 +50,11 @@ export default function RightSideBar({
             roomId={roomId}
           >
           </Maps>
+        ) : partToShow == "tokens" ? (
+          <Tokens
+            roomId={roomId}
+          >
+          </Tokens>
         ) : (
           <Settings
             roomId={roomId}

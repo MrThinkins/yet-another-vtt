@@ -20,7 +20,7 @@ html, body {
   width: 100%;
 }
 
-.rightSideBarGrid { 
+.rightSideBarGrid {
   display: grid;
   grid-template-rows: 2rem auto;
   height: 100vh;
@@ -49,7 +49,7 @@ html, body {
 
 .rightSideBarNavGrid {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto auto auto auto;
   padding: 0.25rem;
   background-color: var(--background-highlight);
 }
