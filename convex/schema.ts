@@ -31,12 +31,31 @@ export default defineSchema({
     name: v.string(),
     usePassword: v.boolean(),
     password: v.optional(v.number()),
-    storageId: v.optional(v.id("_storage"))
+    storageId: v.optional(v.id("_storage")),
+    mapInfo: v.optional(v.object({
+      storageId: v.id("_storage"),
+      tokenInfo: v.optional(v.object({
+        tokenStorageId: v.id("_string"),
+        tokenName: v.string(),
+        tokenPosition: v.object({
+          x: v.number(),
+          y: v.number(),
+          scale: v.number(),
+          rotation: v.number()
+        })
+      }))
+    }))   
   }),
   maps: defineTable({
     roomId: v.number(),
     userId: v.string(),
     mapName: v.string(),
+    storageId: v.id("_storage"),
+  }),
+  tokens: defineTable({
+    roomId: v.number(),
+    userId: v.string(),
+    tokenName: v.string(),
     storageId: v.id("_storage")
   })
 })
