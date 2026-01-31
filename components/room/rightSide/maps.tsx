@@ -11,7 +11,7 @@ export default function Maps({
 }: mapsProps) {
   const mapList = useQuery(api.maps.getImageList, { roomId: roomId })
   
-  const generateUploadUrl = useMutation(api.mapImages.generateUploadUrl)
+  const generateUploadUrl = useMutation(api.images.generateUploadUrl)
   const addImageToList = useMutation(api.maps.addImageToList)
   const setMapId = useMutation(api.rooms.setStorageId)
   
@@ -44,7 +44,9 @@ export default function Maps({
 
   return (
     <div>
-      Maps
+      <h3>
+        Maps
+      </h3>
       <form 
         onSubmit={uploadImage}
       >

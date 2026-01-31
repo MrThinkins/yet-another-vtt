@@ -9,7 +9,7 @@
  */
 
 import type * as creatures from "../creatures.js";
-import type * as mapImages from "../mapImages.js";
+import type * as images from "../images.js";
 import type * as maps from "../maps.js";
 import type * as messages from "../messages.js";
 import type * as migration from "../migration.js";
@@ -18,6 +18,7 @@ import type * as rooms from "../rooms.js";
 import type * as seversideFunctions_checkMessage from "../seversideFunctions/checkMessage.js";
 import type * as seversideFunctions_diceRoll from "../seversideFunctions/diceRoll.js";
 import type * as seversideFunctions_trimMessages from "../seversideFunctions/trimMessages.js";
+import type * as tokens from "../tokens.js";
 
 import type {
   ApiFromModules,
@@ -27,7 +28,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   creatures: typeof creatures;
-  mapImages: typeof mapImages;
+  images: typeof images;
   maps: typeof maps;
   messages: typeof messages;
   migration: typeof migration;
@@ -36,6 +37,7 @@ declare const fullApi: ApiFromModules<{
   "seversideFunctions/checkMessage": typeof seversideFunctions_checkMessage;
   "seversideFunctions/diceRoll": typeof seversideFunctions_diceRoll;
   "seversideFunctions/trimMessages": typeof seversideFunctions_trimMessages;
+  tokens: typeof tokens;
 }>;
 
 /**
